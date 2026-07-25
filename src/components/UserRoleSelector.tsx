@@ -31,7 +31,7 @@ export const UserRoleSelector: React.FC<UserRoleSelectorProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-emerald-950/80 backdrop-blur-xs flex items-center justify-center p-4 font-sans">
-      <div className="bg-white max-w-2xl w-full border-2 border-emerald-900 shadow-2xl overflow-hidden">
+      <div className="bg-white max-w-2xl w-full border border-emerald-900/30 rounded-2xl shadow-2xl overflow-hidden">
         {/* Header */}
         <div className="bg-emerald-950 text-white p-4 flex items-center justify-between border-b border-emerald-900">
           <div className="flex items-center space-x-3">
@@ -47,7 +47,7 @@ export const UserRoleSelector: React.FC<UserRoleSelectorProps> = ({
           </div>
           <button 
             onClick={onClose}
-            className="p-1 text-emerald-300 hover:text-white hover:bg-emerald-800 transition-colors"
+            className="p-1 text-emerald-300 hover:text-white hover:bg-emerald-800 rounded-md transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -67,15 +67,15 @@ export const UserRoleSelector: React.FC<UserRoleSelectorProps> = ({
                   onSelectUser(u);
                   onClose();
                 }}
-                className={`w-full text-left p-3 border transition-colors flex items-start justify-between ${
+                className={`w-full text-left p-3.5 rounded-xl border transition-all flex items-start justify-between ${
                   isSelected
-                    ? 'bg-emerald-50 border-emerald-800 border-l-8 border-l-emerald-800 shadow-xs'
+                    ? 'bg-emerald-50 border-emerald-800 shadow-xs'
                     : 'bg-white border-slate-200 hover:bg-slate-50'
                 }`}
               >
                 <div className="flex items-start space-x-3">
-                  <div className={`w-9 h-9 flex-shrink-0 flex items-center justify-center font-bold text-xs text-white border border-emerald-900 font-heading ${
-                    isSelected ? 'bg-amber-500 text-slate-950' : 'bg-emerald-900'
+                  <div className={`w-9 h-9 flex-shrink-0 flex items-center justify-center font-bold text-xs rounded-lg font-heading ${
+                    isSelected ? 'bg-amber-500 text-slate-950' : 'bg-emerald-900 text-white'
                   }`}>
                     {u.name.charAt(0)}
                   </div>
@@ -85,7 +85,7 @@ export const UserRoleSelector: React.FC<UserRoleSelectorProps> = ({
                       <span className="font-bold text-xs text-slate-900 uppercase font-heading">
                         {u.name}
                       </span>
-                      <span className="text-[10px] font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 border border-emerald-300 uppercase">
+                      <span className="text-[10px] font-bold bg-emerald-100 text-emerald-900 px-2.5 py-0.5 rounded-full border border-emerald-300 uppercase">
                         {u.role.replace('_', ' ')}
                       </span>
                     </div>

@@ -29,9 +29,25 @@ import {
   Compass,
   Sprout,
   Check,
-  AlertCircle
+  AlertCircle,
+  Newspaper,
+  Pin,
+  Share2,
+  Tag,
+  Bookmark,
+  Eye,
+  MessageSquare,
+  Filter,
+  Plus,
+  ChevronRight,
+  Megaphone,
+  Printer,
+  ThumbsUp,
+  CalendarDays
 } from 'lucide-react';
 import { Student, Course, ScheduleItem, Grade, Announcement } from '../types';
+import heroBgImage from '../assets/images/university_hero_bg_1784981162011.jpg';
+import istaLogo from '../assets/images/ista_logo_1784981336164.jpg';
 
 interface PublicWebsiteProps {
   students: Student[];
@@ -49,11 +65,151 @@ export type PublicPage =
   | 'home' 
   | 'about' 
   | 'programs' 
+  | 'announcements'
+  | 'blog'
   | 'registration' 
   | 'schedule' 
   | 'transcripts' 
   | 'campus' 
   | 'contact';
+
+export interface BlogPost {
+  id: string;
+  titre: string;
+  category: 'Recherche & Tech' | 'Vie du Campus' | 'Événements & Soutenances' | 'Partenariats' | 'Infrastructures';
+  author: string;
+  authorRole?: string;
+  date: string;
+  readTime: string;
+  excerpt: string;
+  fullText: string;
+  tags: string[];
+  featured?: boolean;
+  likes: number;
+  comments: { id: string; author: string; text: string; date: string }[];
+  imageUrl?: string;
+}
+
+const INITIAL_BLOG_POSTS: BlogPost[] = [
+  {
+    id: 'blog-1',
+    titre: "Inauguration du Laboratoire Informatique & Réseaux au Campus de Burhuza",
+    category: 'Recherche & Tech',
+    author: "Cellule de Communication ISTA",
+    authorRole: "Direction de l'Information",
+    date: "2026-07-22",
+    readTime: "4 min de lecture",
+    excerpt: "Les étudiants en Informatique Appliquée bénéficient désormais de 40 postes informatiques interconnectés pour les travaux pratiques en génie logiciel et administration réseau.",
+    fullText: `Dans le cadre de la modernisation du Campus de Burhuza, le Comité de Gestion de l'ISTA a procédé à l'inauguration officielle des nouvelles installations du Laboratoire d'Informatique.
+
+Équipé de serveurs dédiés, d'une connexion haut débit et d'outils de développement de dernière génération, ce labo permettra aux étudiants des niveaux L1, L2 et L3 d'effectuer leurs séances de travaux pratiques en :
+- Développement d'applications Web & Mobiles
+- Administration de bases de données relationnelles
+- Sécurité des réseaux et systèmes Linux
+- Algorithmique et structures de données avancées
+
+Le Directeur Général, Prof. Dieudonné KABANGA, a souligné l'importance de ce laboratoire pour la formation d'ingénieurs techniquement compétents et immédiatement opérationnels sur le marché du travail du Sud-Kivu et de la RDC.`,
+    tags: ['Informatique', 'Laboratoire', 'LMD', 'Technologie'],
+    featured: true,
+    likes: 42,
+    comments: [
+      { id: 'c1', author: 'Ir. Gloire M.', text: 'Une excellente initiative pour nos étudiants en L2 Informatique ! Bravo à la direction.', date: '2026-07-23' },
+      { id: 'c2', author: 'Etudiant L1', text: 'Merci pour ces machines performantes, les TP de langage C vont être géniaux !', date: '2026-07-23' }
+    ]
+  },
+  {
+    id: 'blog-2',
+    titre: "Calendrier Officiel des Soutenances de TFC et Mémoires - Session Aout 2026",
+    category: 'Événements & Soutenances',
+    author: "Secrétariat Académique",
+    authorRole: "Secrétaire Général Académique",
+    date: "2026-07-20",
+    readTime: "3 min de lecture",
+    excerpt: "Publication des grilles de passage pour les présentations publiques des travaux de fin de cycle (TFC) dans toutes les sections agréées de l'ISTA Burhuza.",
+    fullText: `Le Secrétaire Général Académique porte à la connaissance de tous les étudiants finalistes qu'en vertu du calendrier académique officiel 2025-2026, les soutenances publiques des Travaux de Fin de Cycle (TFC) et Mémoires se tiendront du 10 au 15 août 2026.
+
+Chaque candidat doit s'assurer d'avoir :
+1. Validé l'ensemble des crédits des semestres S1 à S6.
+2. Déposé quatre (4) exemplaires reliés de son travail au secrétariat de section.
+3. Obtenu le quitus de la caisse centrale concernant les frais d'études.
+
+Les jurys d'évaluation seront présidés par les Chefs de Travaux et Professeurs désignés par la direction. Les familles, proches et étudiants sont invités à assister aux séances publiques.`,
+    tags: ['Soutenances', 'TFC', 'Examens', 'Graduation'],
+    featured: false,
+    likes: 28,
+    comments: [
+      { id: 'c3', author: 'MUKAMBA Jean-Luc', text: 'Informations bien reçues. À quel niveau peut-on consulter la liste des jurys ?', date: '2026-07-21' }
+    ]
+  },
+  {
+    id: 'blog-3',
+    titre: "Micro-centrale Solaire Autonome : La Section Génie Électrique déploie son prototype",
+    category: 'Recherche & Tech',
+    author: "Prof. Marc KABAMBA",
+    authorRole: "Enseignant-Chercheur Génie Électrique",
+    date: "2026-07-15",
+    readTime: "5 min de lecture",
+    excerpt: "Conçue et assemblée sur le campus, une centrale photovoltaïque de 10 kVA fournit un éclairage continu et alimente les équipements de recherche de Burhuza.",
+    fullText: `Pour pallier les coupures de courant et promouvoir l'autonomie énergétique en milieu rural, les enseignants et étudiants de la Section Génie Électrique ont mis en place une micro-centrale solaire sur le toit du bâtiment administratif.
+
+Ce projet à vocation didactique et communautaire comprend :
+- 16 panneaux solaires monocristallins de 450W
+- Un banc de batteries lithium-fer-phosphate
+- Un onduleur hybride intelligent paramétré par les étudiants de L3
+- Un système de télémesure en temps réel accessible en réseau local
+
+Cette réalisation démontre le savoir-faire pratique de l'ISTA Burhuza et constitue un modèle réplicable pour les collectivités territoriales du Territoire de Walungu.`,
+    tags: ['Génie Électrique', 'Énergie Solaire', 'Autonomie', 'Innovation'],
+    featured: false,
+    likes: 56,
+    comments: [
+      { id: 'c4', author: 'Aline CHIRUZA', text: 'Magnifique travail des ingénieurs électriciens ! C\'est la preuve que Burhuza innove.', date: '2026-07-16' }
+    ]
+  },
+  {
+    id: 'blog-4',
+    titre: "Journée d'Accueil et d'Orientation des Nouveaux Étudiants pour l'Année 2025-2026",
+    category: 'Vie du Campus',
+    author: "Représentation Étudiante (CP)",
+    authorRole: "Porte-parole des Étudiants",
+    date: "2026-07-10",
+    readTime: "3 min de lecture",
+    excerpt: "Présentation des règles académiques du système LMD, visite guidée des ateliers et enregistrement des comptes sur le portail SIGU.",
+    fullText: `La Représentation des Étudiants de l'ISTA Burhuza a organisé une journée d'orientation chaleureuse à l'attention de la nouvelle promotion d'étudiants inscrits en Licence 1.
+
+Au programme de cette journée :
+- Discours de bienvenue du Directeur Général et présentation des Chefs de Section.
+- Atelier d'explication du système LMD (Crédits, Semestres, Unités d'Enseignement, Délibérations).
+- Démonstration d'utilisation du Portail SIGU pour la consultation des horaires et des bulletins de notes.
+- Visite guidée de la bibliothèque, du labo informatique et des ateliers de mécanique.
+
+Bienvenue à tous les nouveaux futurs ingénieurs de l'ISTA Burhuza !`,
+    tags: ['Inscriptions', 'Orientation', 'Vie Étudiante', 'LMD'],
+    featured: false,
+    likes: 31,
+    comments: []
+  },
+  {
+    id: 'blog-5',
+    titre: "Partenariat ISTA Burhuza & Industriels du Sud-Kivu : 30 Stages Académiques Garantis",
+    category: 'Partenariats',
+    author: "Cellule de Liaison Entreprises",
+    authorRole: "Coordination des Stages",
+    date: "2026-07-02",
+    readTime: "4 min de lecture",
+    excerpt: "Signature d'accords de partenariat permettant l'immersion professionnelle des étudiants de Génie Civil, Mécanique et Électrique dans les entreprises de la région.",
+    fullText: `L'Institut Supérieur de Techniques Appliquées (ISTA Burhuza) consolide ses liens avec le secteur privé et industriel du Sud-Kivu. La direction a signé cinq (5) conventions de partenariat stratégique avec des entreprises spécialisées en construction (BTP), maintenance industrielle et télécommunications.
+
+Ces conventions offrent :
+1. Des stages pratiques de 2 mois encadrés par des tuteurs d'entreprise.
+2. La possibilité de traiter des sujets de TFC orientés vers les problèmes réels des usines locaux.
+3. Des opportunités de pré-embauche pour les meilleurs lauréats de la promotion.`,
+    tags: ['Stages', 'Emploi', 'Partenariats', 'Génie Civil'],
+    featured: false,
+    likes: 47,
+    comments: []
+  }
+];
 
 export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
   students,
@@ -68,6 +224,27 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState<PublicPage>('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Blog State & Modals
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>(INITIAL_BLOG_POSTS);
+  const [selectedAnnouncementForModal, setSelectedAnnouncementForModal] = useState<Announcement | null>(null);
+  const [selectedBlogForModal, setSelectedBlogForModal] = useState<BlogPost | null>(null);
+  const [announcementFilter, setAnnouncementFilter] = useState('Tous');
+  const [announcementSearch, setAnnouncementSearch] = useState('');
+  const [blogCategoryFilter, setBlogCategoryFilter] = useState('Tous');
+  const [blogSearch, setBlogSearch] = useState('');
+  const [showArticleSubmissionModal, setShowArticleSubmissionModal] = useState(false);
+  const [newBlogData, setNewBlogData] = useState({
+    titre: '',
+    category: 'Recherche & Tech' as BlogPost['category'],
+    author: '',
+    excerpt: '',
+    fullText: '',
+    tags: 'Technologie, Burhuza'
+  });
+  const [newBlogSuccess, setNewBlogSuccess] = useState(false);
+  const [newCommentText, setNewCommentText] = useState('');
+  const [commentAuthor, setCommentAuthor] = useState('');
 
   // Online Registration State
   const [regSuccess, setRegSuccess] = useState(false);
@@ -98,6 +275,63 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
   const [searchedStudent, setSearchedStudent] = useState<Student | null>(null);
   const [searchedStudentGrades, setSearchedStudentGrades] = useState<Grade[]>([]);
   const [transcriptError, setTranscriptError] = useState('');
+
+  // Blog Handlers
+  const handleAddBlogArticle = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newBlogData.titre || !newBlogData.fullText || !newBlogData.author) return;
+    const newPost: BlogPost = {
+      id: `blog-${Date.now()}`,
+      titre: newBlogData.titre,
+      category: newBlogData.category,
+      author: newBlogData.author,
+      authorRole: 'Contributeur ISTA',
+      date: new Date().toISOString().split('T')[0],
+      readTime: '3 min de lecture',
+      excerpt: newBlogData.excerpt || newBlogData.fullText.substring(0, 140) + '...',
+      fullText: newBlogData.fullText,
+      tags: newBlogData.tags.split(',').map(t => t.trim()).filter(Boolean),
+      featured: false,
+      likes: 1,
+      comments: []
+    };
+    setBlogPosts(prev => [newPost, ...prev]);
+    setNewBlogSuccess(true);
+    setTimeout(() => {
+      setNewBlogSuccess(false);
+      setShowArticleSubmissionModal(false);
+      setNewBlogData({
+        titre: '',
+        category: 'Recherche & Tech',
+        author: '',
+        excerpt: '',
+        fullText: '',
+        tags: 'Technologie, Burhuza'
+      });
+    }, 1200);
+  };
+
+  const handleLikeBlogPost = (postId: string) => {
+    setBlogPosts(prev => prev.map(p => p.id === postId ? { ...p, likes: p.likes + 1 } : p));
+    if (selectedBlogForModal && selectedBlogForModal.id === postId) {
+      setSelectedBlogForModal(prev => prev ? { ...prev, likes: prev.likes + 1 } : null);
+    }
+  };
+
+  const handleAddComment = (postId: string) => {
+    if (!newCommentText.trim()) return;
+    const commentObj = {
+      id: `c-${Date.now()}`,
+      author: commentAuthor.trim() || 'Visiteur du Site',
+      text: newCommentText.trim(),
+      date: new Date().toISOString().split('T')[0]
+    };
+    setBlogPosts(prev => prev.map(p => p.id === postId ? { ...p, comments: [...p.comments, commentObj] } : p));
+    if (selectedBlogForModal && selectedBlogForModal.id === postId) {
+      setSelectedBlogForModal(prev => prev ? { ...prev, comments: [...prev.comments, commentObj] } : null);
+    }
+    setNewCommentText('');
+  };
 
   // Registration Submit Handler
   const handleRegistrationSubmit = (e: React.FormEvent) => {
@@ -138,75 +372,72 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
   const navItems: { id: PublicPage; label: string }[] = [
     { id: 'home', label: 'Accueil' },
     { id: 'about', label: 'À Propos' },
-    { id: 'programs', label: 'Formations & Sections' },
-    { id: 'registration', label: 'Inscription en Ligne' },
-    { id: 'schedule', label: 'Horaires de Cours' },
-    { id: 'transcripts', label: 'Relevés de Notes' },
+    { id: 'programs', label: 'Formations' },
+    { id: 'announcements', label: 'Communiqués' },
+    { id: 'blog', label: 'Blog & Actualités' },
+    { id: 'registration', label: 'Inscription' },
+    { id: 'schedule', label: 'Horaires' },
+    { id: 'transcripts', label: 'Relevés' },
     { id: 'campus', label: 'Vie Éducative' },
     { id: 'contact', label: 'Contact' },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col w-full max-w-full overflow-x-hidden">
       {/* Top Announcement Bar */}
-      <div className="bg-emerald-950 text-emerald-100 text-xs py-2 px-4 border-b border-emerald-900">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <div className="flex items-center gap-3">
-            <span className="bg-emerald-700 text-white text-[10px] font-bold uppercase px-2 py-0.5">
+      <div className="bg-emerald-950 text-emerald-100 text-xs py-2 px-3 sm:px-4 border-b border-emerald-900">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+            <span className="bg-emerald-700 text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded-xs">
               INSCRIPTIONS 2025-2026
             </span>
-            <span className="font-medium">
+            <span className="font-medium text-[11px] sm:text-xs">
               Les admissions en ligne pour l'année académique 2025-2026 sont officiellement ouvertes !
             </span>
           </div>
 
-          <div className="flex items-center gap-4 text-[11px]">
+          <div className="flex flex-wrap items-center justify-center gap-3 text-[11px]">
             <span className="flex items-center gap-1 text-emerald-300">
-              <MapPin className="w-3.5 h-3.5" /> Campus de Burhuza, Walungu (Sud-Kivu)
+              <MapPin className="w-3 h-3 flex-shrink-0" /> Burhuza, Walungu
             </span>
             <span className="hidden md:inline text-emerald-400">|</span>
             <span className="flex items-center gap-1 text-emerald-300">
-              <Phone className="w-3.5 h-3.5" /> +243 997 123 456
+              <Phone className="w-3 h-3 flex-shrink-0" /> +243 997 123 456
             </span>
           </div>
         </div>
       </div>
 
       {/* Main Navbar */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-          {/* Logo & University Title */}
+      <header className="bg-white border-b border-slate-200/80 sticky top-0 z-40 shadow-xs w-full">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
+          {/* Clean Borderless Square Logo & University Title */}
           <div 
-            className="flex items-center space-x-3.5 cursor-pointer" 
+            className="flex items-center space-x-2 sm:space-x-3 cursor-pointer group flex-shrink-0" 
             onClick={() => setCurrentPage('home')}
           >
-            <div className="w-12 h-12 bg-emerald-800 text-white flex items-center justify-center font-bold text-xl font-heading border-2 border-emerald-900 shadow-xs">
-              ISTA
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="font-bold text-lg sm:text-xl text-emerald-950 font-heading tracking-tight leading-none uppercase">
-                  ISTA BURHUZA
-                </h1>
-                <span className="text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 px-1.5 py-0.5 uppercase">
-                  RDC - ESU
-                </span>
-              </div>
-              <p className="text-xs text-slate-600 font-medium mt-1">
-                Institut Supérieur de Techniques Appliquées • Campus de Burhuza / Bukavu
-              </p>
+            <img 
+              src={istaLogo} 
+              alt="Logo ISTA" 
+              referrerPolicy="no-referrer" 
+              className="w-10 h-10 sm:w-14 sm:h-14 object-contain aspect-square transition-transform group-hover:scale-105 flex-shrink-0" 
+            />
+            <div className="flex-shrink-0">
+              <h1 className="font-extrabold text-lg sm:text-2xl text-emerald-950 font-heading tracking-tight leading-none uppercase">
+                ISTA
+              </h1>
             </div>
           </div>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden lg:flex items-center space-x-0.5 xl:space-x-1">
             {navItems.map(item => (
               <button
                 key={item.id}
                 onClick={() => setCurrentPage(item.id)}
-                className={`px-3 py-2 text-xs font-bold font-heading uppercase transition-colors border-b-2 ${
+                className={`px-2 xl:px-2.5 py-1.5 text-[11px] xl:text-xs font-bold font-heading uppercase transition-colors border-b-2 whitespace-nowrap rounded-lg ${
                   currentPage === item.id 
-                    ? 'border-emerald-700 text-emerald-900 bg-emerald-50/50' 
+                    ? 'border-emerald-700 text-emerald-900 bg-emerald-50/80' 
                     : 'border-transparent text-slate-700 hover:text-emerald-800 hover:bg-slate-100'
                 }`}
               >
@@ -216,38 +447,39 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
           </nav>
 
           {/* Action Button: Espace Administration / SIGU */}
-          <div className="hidden sm:flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-shrink-0">
             {isLoggedIn ? (
               <button
                 onClick={onGoToDashboard}
-                className="bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs px-4 py-2.5 flex items-center gap-2 border border-emerald-900 shadow-xs transition-colors uppercase font-heading"
+                className="bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl flex items-center gap-1.5 border border-emerald-900 shadow-xs transition-colors uppercase font-heading whitespace-nowrap"
               >
-                <ShieldCheck className="w-4 h-4 text-emerald-300" />
-                Accéder au SIGU ({currentUserRole})
+                <ShieldCheck className="w-4 h-4 text-emerald-300 flex-shrink-0" />
+                <span>SIGU <span className="hidden sm:inline">({currentUserRole})</span></span>
               </button>
             ) : (
               <button
                 onClick={onLoginRequest}
-                className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-xs px-4 py-2.5 flex items-center gap-2 border border-emerald-950 shadow-xs transition-colors uppercase font-heading"
+                className="bg-emerald-900 hover:bg-emerald-950 text-white font-bold text-xs px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl flex items-center gap-1.5 border border-emerald-950 shadow-xs transition-colors uppercase font-heading whitespace-nowrap"
               >
-                <LogIn className="w-4 h-4 text-amber-400" />
-                Portail SIGU / Connexion
+                <LogIn className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                <span>Connexion <span className="hidden md:inline">Portail SIGU</span></span>
               </button>
             )}
-          </div>
 
-          {/* Mobile Menu Toggle Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-slate-700 hover:bg-slate-100 border border-slate-300"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+            {/* Mobile & Tablet Menu Toggle Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-xl border border-slate-200/80 transition-colors flex-shrink-0"
+              title="Menu de navigation"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Nav Dropdown */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-white border-b border-slate-200 px-4 py-3 space-y-2">
+          <div className="lg:hidden bg-white border-b border-slate-200 px-4 py-3 space-y-1.5 shadow-lg">
             {navItems.map(item => (
               <button
                 key={item.id}
@@ -255,36 +487,13 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
                   setCurrentPage(item.id);
                   setMobileMenuOpen(false);
                 }}
-                className={`w-full text-left px-3 py-2 text-xs font-bold uppercase ${
+                className={`w-full text-left px-3 py-2.5 text-xs font-bold uppercase rounded-lg transition-colors ${
                   currentPage === item.id ? 'bg-emerald-800 text-white' : 'text-slate-800 hover:bg-slate-100'
                 }`}
               >
                 {item.label}
               </button>
             ))}
-            <div className="pt-2 border-t border-slate-200">
-              {isLoggedIn ? (
-                <button
-                  onClick={() => {
-                    onGoToDashboard();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full bg-emerald-800 text-white text-xs font-bold py-2.5 px-3 flex items-center justify-center gap-2"
-                >
-                  <ShieldCheck className="w-4 h-4" /> Espace SIGU ({currentUserRole})
-                </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    onLoginRequest();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full bg-emerald-900 text-white text-xs font-bold py-2.5 px-3 flex items-center justify-center gap-2"
-                >
-                  <LogIn className="w-4 h-4 text-amber-400" /> Connexion Portail SIGU
-                </button>
-              )}
-            </div>
           </div>
         )}
       </header>
@@ -294,11 +503,23 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
         {/* PAGE 1: HOME */}
         {currentPage === 'home' && (
           <div>
-            {/* Hero Banner Section */}
-            <section className="bg-gradient-to-br from-emerald-950 via-emerald-900 to-slate-950 text-white py-16 px-4 sm:px-6 border-b-4 border-emerald-700">
-              <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Hero Banner Section with Background Image - Extra Transparent Background Overlay per request */}
+            <section className="relative overflow-hidden bg-emerald-950 text-white py-16 px-4 sm:px-6 border-b-4 border-emerald-700">
+              {/* Background Image with Crisp Extra Transparent Overlay */}
+              <div className="absolute inset-0 z-0">
+                <img 
+                  src={heroBgImage} 
+                  alt="Campus ISTA Burhuza" 
+                  referrerPolicy="no-referrer" 
+                  className="w-full h-full object-cover object-center opacity-65 filter brightness-105 contrast-105 transition-all duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/60 via-emerald-950/35 to-slate-950/25 mix-blend-multiply"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/70 via-transparent to-emerald-950/20"></div>
+              </div>
+
+              <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 <div className="lg:col-span-7 space-y-6">
-                  <div className="inline-flex items-center gap-2 bg-emerald-800/80 text-emerald-200 text-xs font-bold uppercase px-3 py-1 border border-emerald-600">
+                  <div className="inline-flex items-center gap-2 bg-emerald-800/80 text-emerald-200 text-xs font-bold uppercase px-3.5 py-1.5 rounded-full border border-emerald-600/60 backdrop-blur-xs">
                     <GraduationCap className="w-4 h-4 text-amber-400" />
                     Enseignement Supérieur et Universitaire (ESU RDC)
                   </div>
@@ -315,19 +536,19 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
                   <div className="flex flex-wrap gap-3 pt-2">
                     <button
                       onClick={() => setCurrentPage('registration')}
-                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase px-5 py-3 flex items-center gap-2 border border-emerald-400 shadow-md transition-all font-heading"
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase px-5 py-3 rounded-xl flex items-center gap-2 border border-emerald-400 shadow-md transition-all font-heading"
                     >
                       <Send className="w-4 h-4" /> S'inscrire en Ligne (2025-2026)
                     </button>
                     <button
                       onClick={() => setCurrentPage('transcripts')}
-                      className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase px-5 py-3 flex items-center gap-2 border border-white/30 transition-all font-heading"
+                      className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase px-5 py-3 rounded-xl flex items-center gap-2 border border-white/30 backdrop-blur-xs transition-all font-heading"
                     >
                       <FileText className="w-4 h-4 text-amber-300" /> Télécharger mon Relevé de Notes
                     </button>
                     <button
                       onClick={() => setCurrentPage('schedule')}
-                      className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase px-5 py-3 flex items-center gap-2 border border-amber-600 shadow-md transition-all font-heading"
+                      className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase px-5 py-3 rounded-xl flex items-center gap-2 border border-amber-600 shadow-md transition-all font-heading"
                     >
                       <Calendar className="w-4 h-4" /> Horaires des Cours
                     </button>
@@ -335,7 +556,7 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
                 </div>
 
                 {/* Hero Quick Card */}
-                <div className="lg:col-span-5 bg-white text-slate-900 p-6 border-2 border-emerald-500 shadow-xl space-y-4">
+                <div className="lg:col-span-5 bg-white text-slate-900 p-6 rounded-2xl border border-emerald-500/40 shadow-2xl space-y-4">
                   <div className="border-b border-slate-200 pb-3 flex items-center justify-between">
                     <div>
                       <h3 className="font-bold text-base text-emerald-950 font-heading uppercase">
@@ -343,7 +564,7 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
                       </h3>
                       <p className="text-xs text-slate-600">Accès direct aux services étudiants ISTA</p>
                     </div>
-                    <span className="bg-emerald-100 text-emerald-900 text-[10px] font-bold px-2 py-0.5 border border-emerald-300 uppercase">
+                    <span className="bg-emerald-100 text-emerald-900 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-300 uppercase">
                       LMD 2026
                     </span>
                   </div>
@@ -351,10 +572,10 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
                   <div className="space-y-2.5 text-xs">
                     <div 
                       onClick={() => setCurrentPage('registration')}
-                      className="p-3 bg-slate-50 hover:bg-emerald-50 border border-slate-200 cursor-pointer flex items-center justify-between group transition-colors"
+                      className="p-3 bg-slate-50 hover:bg-emerald-50 border border-slate-200/80 rounded-xl cursor-pointer flex items-center justify-between group transition-all"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-emerald-800 text-white flex items-center justify-center font-bold">1</div>
+                        <div className="w-8 h-8 bg-emerald-800 text-white flex items-center justify-center font-bold rounded-lg">1</div>
                         <div>
                           <p className="font-bold text-slate-900 group-hover:text-emerald-900">Demande d'Admission</p>
                           <p className="text-[11px] text-slate-500">Formulaire officiel & confirmation immédiate</p>
@@ -365,10 +586,10 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
 
                     <div 
                       onClick={() => setCurrentPage('transcripts')}
-                      className="p-3 bg-slate-50 hover:bg-emerald-50 border border-slate-200 cursor-pointer flex items-center justify-between group transition-colors"
+                      className="p-3 bg-slate-50 hover:bg-emerald-50 border border-slate-200/80 rounded-xl cursor-pointer flex items-center justify-between group transition-all"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-emerald-800 text-white flex items-center justify-center font-bold">2</div>
+                        <div className="w-8 h-8 bg-emerald-800 text-white flex items-center justify-center font-bold rounded-lg">2</div>
                         <div>
                           <p className="font-bold text-slate-900 group-hover:text-emerald-900">Relevés de Cotes & Bulletins</p>
                           <p className="text-[11px] text-slate-500">Saisie du matricule et génération PDF</p>
@@ -379,10 +600,10 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
 
                     <div 
                       onClick={() => setCurrentPage('schedule')}
-                      className="p-3 bg-slate-50 hover:bg-emerald-50 border border-slate-200 cursor-pointer flex items-center justify-between group transition-colors"
+                      className="p-3 bg-slate-50 hover:bg-emerald-50 border border-slate-200/80 rounded-xl cursor-pointer flex items-center justify-between group transition-all"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-emerald-800 text-white flex items-center justify-center font-bold">3</div>
+                        <div className="w-8 h-8 bg-emerald-800 text-white flex items-center justify-center font-bold rounded-lg">3</div>
                         <div>
                           <p className="font-bold text-slate-900 group-hover:text-emerald-900">Emploi du Temps Hebdomadaire</p>
                           <p className="text-[11px] text-slate-500">Planning par section, promotion et salle</p>
@@ -393,7 +614,7 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
 
                     <div 
                       onClick={onLoginRequest}
-                      className="p-3 bg-emerald-900 text-white cursor-pointer flex items-center justify-between hover:bg-emerald-950 transition-colors"
+                      className="p-3 bg-emerald-900 text-white rounded-xl cursor-pointer flex items-center justify-between hover:bg-emerald-950 transition-colors shadow-xs"
                     >
                       <div className="flex items-center gap-3">
                         <ShieldCheck className="w-5 h-5 text-amber-400" />
@@ -432,17 +653,17 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
             </section>
 
             {/* Director General Word / Message */}
-            <section className="py-12 px-4 sm:px-6 bg-slate-100 border-b border-slate-200">
+            <section className="py-12 px-4 sm:px-6 bg-slate-100/70 border-b border-slate-200/80">
               <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-                <div className="md:col-span-4 bg-white p-6 border-2 border-emerald-900 text-center space-y-3">
-                  <div className="w-24 h-24 mx-auto bg-emerald-800 text-white flex items-center justify-center font-bold text-3xl font-heading border-2 border-emerald-900 shadow-md">
+                <div className="md:col-span-4 bg-white p-6 rounded-2xl border border-emerald-900/20 text-center space-y-3 shadow-sm">
+                  <div className="w-24 h-24 mx-auto bg-emerald-800 text-white flex items-center justify-center font-bold text-3xl font-heading rounded-2xl border-2 border-emerald-900 shadow-md">
                     DG
                   </div>
                   <div>
                     <h3 className="font-bold text-base text-slate-900 font-heading">Prof. Dieudonné KABANGA</h3>
                     <p className="text-xs text-emerald-800 font-bold uppercase">Directeur Général de l'ISTA Burhuza</p>
                   </div>
-                  <span className="inline-block bg-amber-100 text-amber-900 text-[10px] font-bold px-2 py-0.5 border border-amber-300 uppercase">
+                  <span className="inline-block bg-amber-100 text-amber-900 text-[10px] font-bold px-3 py-1 rounded-full border border-amber-300 uppercase">
                     Mot de la Direction
                   </span>
                 </div>
@@ -462,7 +683,7 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
             </section>
 
             {/* Sections / Academic Programs Preview */}
-            <section className="py-14 px-4 sm:px-6 bg-white border-b border-slate-200">
+            <section className="py-14 px-4 sm:px-6 bg-white border-b border-slate-200/80">
               <div className="max-w-7xl mx-auto space-y-8">
                 <div className="text-center max-w-2xl mx-auto space-y-2">
                   <h2 className="text-2xl font-bold text-emerald-950 font-heading uppercase">
@@ -474,8 +695,8 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="p-5 border-2 border-slate-200 bg-slate-50 hover:border-emerald-700 transition-colors space-y-3">
-                    <div className="w-10 h-10 bg-emerald-800 text-white flex items-center justify-center font-bold">
+                  <div className="p-5 rounded-2xl border border-slate-200/80 bg-slate-50 hover:border-emerald-700 hover:shadow-md transition-all space-y-3">
+                    <div className="w-10 h-10 bg-emerald-800 text-white rounded-xl flex items-center justify-center font-bold">
                       <Laptop className="w-5 h-5" />
                     </div>
                     <h3 className="font-bold text-base text-slate-900 font-heading uppercase">Section Informatique Appliquée</h3>
@@ -488,8 +709,8 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
                     </div>
                   </div>
 
-                  <div className="p-5 border-2 border-slate-200 bg-slate-50 hover:border-emerald-700 transition-colors space-y-3">
-                    <div className="w-10 h-10 bg-emerald-800 text-white flex items-center justify-center font-bold">
+                  <div className="p-5 rounded-2xl border border-slate-200/80 bg-slate-50 hover:border-emerald-700 hover:shadow-md transition-all space-y-3">
+                    <div className="w-10 h-10 bg-emerald-800 text-white rounded-xl flex items-center justify-center font-bold">
                       <Zap className="w-5 h-5" />
                     </div>
                     <h3 className="font-bold text-base text-slate-900 font-heading uppercase">Section Génie Électrique</h3>
@@ -502,8 +723,8 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
                     </div>
                   </div>
 
-                  <div className="p-5 border-2 border-slate-200 bg-slate-50 hover:border-emerald-700 transition-colors space-y-3">
-                    <div className="w-10 h-10 bg-emerald-800 text-white flex items-center justify-center font-bold">
+                  <div className="p-5 rounded-2xl border border-slate-200/80 bg-slate-50 hover:border-emerald-700 hover:shadow-md transition-all space-y-3">
+                    <div className="w-10 h-10 bg-emerald-800 text-white rounded-xl flex items-center justify-center font-bold">
                       <Wrench className="w-5 h-5" />
                     </div>
                     <h3 className="font-bold text-base text-slate-900 font-heading uppercase">Section Génie Mécanique</h3>
@@ -520,7 +741,7 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
                 <div className="text-center pt-2">
                   <button
                     onClick={() => setCurrentPage('programs')}
-                    className="bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs uppercase px-6 py-3 border border-emerald-950 inline-flex items-center gap-2 font-heading"
+                    className="bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs uppercase px-6 py-3 rounded-xl border border-emerald-950 inline-flex items-center gap-2 font-heading shadow-xs transition-colors"
                   >
                     Voir Toutes les 5 Sections & Programmes LMD
                   </button>
@@ -528,40 +749,177 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
               </div>
             </section>
 
-            {/* Official Announcements / News */}
-            <section className="py-12 px-4 sm:px-6 bg-slate-50">
+            {/* Official Announcements / Communiqués Preview on Homepage */}
+            <section className="py-12 px-4 sm:px-6 bg-emerald-950 text-white">
               <div className="max-w-7xl mx-auto space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-xl font-bold text-emerald-950 font-heading uppercase">
-                      Communiqués Officiels & Actualités du Campus
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-800/80 pb-4">
+                  <div className="space-y-1">
+                    <span className="inline-flex items-center gap-1.5 text-amber-400 text-xs font-bold uppercase font-heading tracking-wide">
+                      <Megaphone className="w-4 h-4" /> Publication Officielle
+                    </span>
+                    <h2 className="text-2xl font-extrabold text-white font-heading uppercase">
+                      Communiqués Officiels ISTA Burhuza
                     </h2>
-                    <p className="text-xs text-slate-600">Dernières publications de la direction académique d'ISTA Burhuza</p>
                   </div>
                   <button 
-                    onClick={() => setCurrentPage('registration')}
-                    className="text-xs font-bold text-emerald-800 hover:underline uppercase"
+                    onClick={() => setCurrentPage('announcements')}
+                    className="bg-emerald-800 hover:bg-emerald-700 text-emerald-100 font-bold text-xs uppercase px-4 py-2.5 rounded-xl border border-emerald-600 flex items-center gap-2 self-start sm:self-auto font-heading transition-colors"
                   >
-                    Demander une Inscription →
+                    <span>Consulter tous les communiqués ({announcements.length})</span>
+                    <ChevronRight className="w-4 h-4 text-amber-400" />
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {announcements.map(ann => (
-                    <div key={ann.id} className="bg-white p-5 border-2 border-slate-200 hover:border-emerald-800 transition-colors space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-bold uppercase bg-emerald-100 text-emerald-900 border border-emerald-300 px-2 py-0.5">
-                          {ann.auteurRole}
-                        </span>
-                        <span className="text-xs text-slate-500">{ann.date}</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {announcements.slice(0, 3).map(ann => (
+                    <div 
+                      key={ann.id} 
+                      onClick={() => setSelectedAnnouncementForModal(ann)}
+                      className="bg-emerald-900/90 hover:bg-emerald-900 border border-emerald-700/80 p-5 rounded-2xl cursor-pointer transition-all hover:-translate-y-1 hover:shadow-xl flex flex-col justify-between space-y-4 group"
+                    >
+                      <div className="space-y-2.5">
+                        <div className="flex items-center justify-between">
+                          <span className={`text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full border ${
+                            ann.priorite === 'Urgente' 
+                              ? 'bg-rose-500/20 text-rose-300 border-rose-500/40' 
+                              : ann.priorite === 'Haute' 
+                              ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' 
+                              : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                          }`}>
+                            {ann.priorite} • {ann.auteurRole}
+                          </span>
+                          <span className="text-[11px] text-emerald-300 font-mono">{ann.date}</span>
+                        </div>
+                        <h3 className="font-bold text-base text-white font-heading leading-snug group-hover:text-amber-300 transition-colors">
+                          {ann.titre}
+                        </h3>
+                        <p className="text-xs text-emerald-100/90 line-clamp-3 leading-relaxed">
+                          {ann.contenu}
+                        </p>
                       </div>
-                      <h3 className="font-bold text-base text-slate-900 font-heading">{ann.titre}</h3>
-                      <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">{ann.contenu}</p>
-                      <div className="pt-2 text-[11px] text-slate-500 font-medium">
-                        Cible: <strong className="text-emerald-900">{ann.cible}</strong>
+
+                      <div className="pt-3 border-t border-emerald-800/80 flex items-center justify-between text-[11px]">
+                        <span className="text-emerald-300 font-medium">Cible: <strong className="text-white">{ann.cible}</strong></span>
+                        <span className="text-amber-400 font-bold group-hover:underline inline-flex items-center gap-1">
+                          Consulter <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            </section>
+
+            {/* Blog & Latest News Preview on Homepage */}
+            <section className="py-14 px-4 sm:px-6 bg-slate-100 border-b border-slate-200">
+              <div className="max-w-7xl mx-auto space-y-8">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="space-y-1">
+                    <span className="inline-flex items-center gap-1.5 text-emerald-800 text-xs font-bold uppercase font-heading tracking-wide">
+                      <Newspaper className="w-4 h-4 text-emerald-700" /> Journal & Actualités Campus
+                    </span>
+                    <h2 className="text-2xl font-extrabold text-slate-900 font-heading uppercase">
+                      Le Blog Officiel de l'ISTA Burhuza
+                    </h2>
+                    <p className="text-xs text-slate-600">
+                      Innovations technologiques, événements académiques et vie estudiantine au Sud-Kivu.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => setShowArticleSubmissionModal(true)}
+                      className="bg-white hover:bg-slate-50 text-emerald-900 border border-emerald-300 font-bold text-xs uppercase px-3.5 py-2.5 rounded-xl font-heading transition-colors flex items-center gap-1.5 shadow-2xs"
+                    >
+                      <Plus className="w-4 h-4 text-emerald-700" /> Proposer un Article
+                    </button>
+                    <button 
+                      onClick={() => setCurrentPage('blog')}
+                      className="bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs uppercase px-4 py-2.5 rounded-xl font-heading transition-colors flex items-center gap-1.5 shadow-2xs"
+                    >
+                      <span>Voir Tout le Blog</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Featured Post Card + Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                  {/* Featured Article */}
+                  {blogPosts.find(b => b.featured) && (
+                    <div 
+                      onClick={() => setSelectedBlogForModal(blogPosts.find(b => b.featured)!)}
+                      className="lg:col-span-7 bg-white rounded-2xl border border-slate-200/90 shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden flex flex-col justify-between group"
+                    >
+                      <div className="p-6 sm:p-8 space-y-4">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <span className="bg-emerald-800 text-white text-[10px] font-bold uppercase px-3 py-1 rounded-full font-heading">
+                            ARTICLE À LA UNE • {blogPosts.find(b => b.featured)!.category}
+                          </span>
+                          <span className="text-xs text-slate-500 font-medium flex items-center gap-1">
+                            <Clock className="w-3.5 h-3.5 text-emerald-700" /> {blogPosts.find(b => b.featured)!.readTime}
+                          </span>
+                        </div>
+
+                        <h3 className="text-xl sm:text-2xl font-bold font-heading text-slate-900 group-hover:text-emerald-800 transition-colors leading-tight">
+                          {blogPosts.find(b => b.featured)!.titre}
+                        </h3>
+
+                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                          {blogPosts.find(b => b.featured)!.excerpt}
+                        </p>
+
+                        <div className="flex flex-wrap gap-1.5 pt-2">
+                          {blogPosts.find(b => b.featured)!.tags.map((tag, idx) => (
+                            <span key={idx} className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2.5 py-0.5 rounded-md border border-slate-200">
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="bg-slate-50 border-t border-slate-200 px-6 py-4 flex items-center justify-between text-xs text-slate-600">
+                        <div className="flex items-center gap-2">
+                          <div className="w-7 h-7 bg-emerald-900 text-white font-bold rounded-full flex items-center justify-center text-[10px]">
+                            ISTA
+                          </div>
+                          <span className="font-bold text-slate-800">{blogPosts.find(b => b.featured)!.author}</span>
+                        </div>
+                        <span className="text-emerald-800 font-bold group-hover:underline flex items-center gap-1">
+                          Lire l'Article <ArrowRight className="w-4 h-4" />
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Grid of Other Articles */}
+                  <div className="lg:col-span-5 space-y-4">
+                    {blogPosts.filter(b => !b.featured).slice(0, 3).map(post => (
+                      <div 
+                        key={post.id}
+                        onClick={() => setSelectedBlogForModal(post)}
+                        className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-md transition-all cursor-pointer space-y-2 group"
+                      >
+                        <div className="flex items-center justify-between text-[10px]">
+                          <span className="font-bold uppercase text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200">
+                            {post.category}
+                          </span>
+                          <span className="text-slate-500">{post.date}</span>
+                        </div>
+                        <h4 className="font-bold text-sm text-slate-900 group-hover:text-emerald-800 transition-colors leading-snug line-clamp-2">
+                          {post.titre}
+                        </h4>
+                        <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                          {post.excerpt}
+                        </p>
+                        <div className="pt-1 flex items-center justify-between text-[11px] text-slate-500">
+                          <span>Par <strong className="text-slate-800">{post.author}</strong></span>
+                          <span className="text-emerald-800 font-bold group-hover:underline flex items-center gap-0.5">
+                            Lire <ChevronRight className="w-3.5 h-3.5" />
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </section>
@@ -1179,17 +1537,20 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
               <div className="bg-white border-2 border-emerald-900 p-6 space-y-6 shadow-md">
                 {/* Transcript Header */}
                 <div className="border-b-2 border-emerald-900 pb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="bg-emerald-800 text-white font-bold text-[10px] px-2 py-0.5 uppercase">RELEVÉ DE COTES OFFICIEL</span>
-                      <span className="font-bold text-xs text-amber-700">{searchedStudent.section} • {searchedStudent.promotion}</span>
+                  <div className="flex items-center gap-4">
+                    <img src={istaLogo} alt="Logo ISTA" referrerPolicy="no-referrer" className="h-16 w-auto object-contain" />
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="bg-emerald-800 text-white font-bold text-[10px] px-2 py-0.5 rounded-full uppercase">RELEVÉ DE COTES OFFICIEL</span>
+                        <span className="font-bold text-xs text-amber-700">{searchedStudent.section} • {searchedStudent.promotion}</span>
+                      </div>
+                      <h2 className="text-xl font-bold text-slate-900 font-heading uppercase mt-1">
+                        {searchedStudent.nom} {searchedStudent.prenom}
+                      </h2>
+                      <p className="text-xs text-slate-600 font-medium">
+                        Matricule: <strong className="text-emerald-900">{searchedStudent.matricule}</strong> | Statut: <strong className="text-emerald-800 uppercase">{searchedStudent.statutPaiement}</strong>
+                      </p>
                     </div>
-                    <h2 className="text-xl font-bold text-slate-900 font-heading uppercase mt-1">
-                      {searchedStudent.nom} {searchedStudent.prenom}
-                    </h2>
-                    <p className="text-xs text-slate-600 font-medium">
-                      Matricule: <strong className="text-emerald-900">{searchedStudent.matricule}</strong> | Statut: <strong className="text-emerald-800 uppercase">{searchedStudent.statutPaiement}</strong>
-                    </p>
                   </div>
 
                   <button
@@ -1295,7 +1656,252 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
           </div>
         )}
 
-        {/* PAGE 8: CONTACT */}
+        {/* PAGE 9: ANNOUNCEMENTS / COMMUNIQUÉS */}
+        {currentPage === 'announcements' && (
+          <div className="py-12 px-4 sm:px-6 max-w-7xl mx-auto space-y-8">
+            <div className="border-b border-slate-200 pb-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <span className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-900 border border-emerald-300 px-3 py-1 rounded-full text-xs font-bold uppercase font-heading mb-2">
+                  <Megaphone className="w-3.5 h-3.5 text-emerald-800" /> Secrétariat Académique & Direction
+                </span>
+                <h1 className="text-3xl font-extrabold text-emerald-950 font-heading uppercase">
+                  Communiqués Officiels & Avis au Public
+                </h1>
+                <p className="text-xs text-slate-600 mt-1">
+                  Retrouvez l'intégralité des communiqués officiels, décisions du jury et notes de la direction de l'ISTA Burhuza.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-slate-600 bg-slate-100 border border-slate-200 px-3 py-2 rounded-xl">
+                  {announcements.length} Communiqué(s) publié(s)
+                </span>
+              </div>
+            </div>
+
+            {/* Filter Bar */}
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row gap-3 items-center justify-between">
+              <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                <span className="text-xs font-bold text-slate-500 uppercase mr-1">Priorité:</span>
+                {['Tous', 'Urgente', 'Haute', 'Normale'].map((prio) => (
+                  <button
+                    key={prio}
+                    onClick={() => setAnnouncementFilter(prio)}
+                    className={`px-3 py-1.5 text-xs font-bold rounded-lg border transition-all ${
+                      announcementFilter === prio
+                        ? 'bg-emerald-800 text-white border-emerald-950 shadow-xs'
+                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                    }`}
+                  >
+                    {prio}
+                  </button>
+                ))}
+              </div>
+
+              <div className="relative w-full sm:w-72">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder="Rechercher dans les communiqués..."
+                  value={announcementSearch}
+                  onChange={(e) => setAnnouncementSearch(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                />
+              </div>
+            </div>
+
+            {/* Announcements Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {announcements
+                .filter(a => announcementFilter === 'Tous' || a.priorite === announcementFilter)
+                .filter(a => 
+                  a.titre.toLowerCase().includes(announcementSearch.toLowerCase()) || 
+                  a.contenu.toLowerCase().includes(announcementSearch.toLowerCase()) ||
+                  a.cible.toLowerCase().includes(announcementSearch.toLowerCase())
+                )
+                .map((ann) => (
+                  <div
+                    key={ann.id}
+                    onClick={() => setSelectedAnnouncementForModal(ann)}
+                    className="bg-white rounded-2xl border border-slate-200/90 hover:border-emerald-700 p-6 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between space-y-4 group"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className={`text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full border ${
+                          ann.priorite === 'Urgente' 
+                            ? 'bg-rose-100 text-rose-800 border-rose-300' 
+                            : ann.priorite === 'Haute' 
+                            ? 'bg-amber-100 text-amber-900 border-amber-300' 
+                            : 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                        }`}>
+                          {ann.priorite} • {ann.auteurRole}
+                        </span>
+                        <span className="text-xs text-slate-500 font-mono flex items-center gap-1">
+                          <Calendar className="w-3 h-3 text-emerald-700" /> {ann.date}
+                        </span>
+                      </div>
+
+                      <h3 className="font-bold text-base text-slate-900 font-heading group-hover:text-emerald-800 transition-colors leading-snug">
+                        {ann.titre}
+                      </h3>
+
+                      <p className="text-xs text-slate-600 line-clamp-4 leading-relaxed font-normal">
+                        {ann.contenu}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                      <span className="text-slate-500 font-medium">Public cible: <strong className="text-emerald-900">{ann.cible}</strong></span>
+                      <span className="text-emerald-800 font-bold group-hover:underline inline-flex items-center gap-1">
+                        Consulter <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
+        {/* PAGE 10: BLOG & ACTUALITÉS */}
+        {currentPage === 'blog' && (
+          <div className="py-12 px-4 sm:px-6 max-w-7xl mx-auto space-y-10">
+            {/* Header */}
+            <div className="border-b border-slate-200 pb-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <span className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-900 border border-emerald-300 px-3 py-1 rounded-full text-xs font-bold uppercase font-heading mb-2">
+                  <Newspaper className="w-3.5 h-3.5 text-emerald-800" /> Journal & Actualités Campus ISTA
+                </span>
+                <h1 className="text-3xl font-extrabold text-emerald-950 font-heading uppercase">
+                  Blog Officiel de l'ISTA Burhuza
+                </h1>
+                <p className="text-xs text-slate-600 mt-1">
+                  Découvrez les travaux de recherche, les projets technologiques des étudiants, les reportages et les nouvelles de la communauté.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowArticleSubmissionModal(true)}
+                  className="bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs uppercase px-5 py-3 rounded-xl border border-emerald-950 flex items-center gap-2 shadow-sm font-heading transition-all"
+                >
+                  <Plus className="w-4 h-4 text-amber-300" /> Proposer un Article
+                </button>
+              </div>
+            </div>
+
+            {/* Filter & Search Controls */}
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs flex flex-col lg:flex-row gap-4 items-center justify-between">
+              {/* Category Tabs */}
+              <div className="flex flex-wrap items-center gap-1.5 w-full lg:w-auto">
+                {['Tous', 'Recherche & Tech', 'Vie Estudiantine', 'Projets Académiques', 'Partenariats'].map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setBlogCategoryFilter(cat)}
+                    className={`px-3 py-1.5 text-xs font-bold rounded-xl border transition-all ${
+                      blogCategoryFilter === cat
+                        ? 'bg-emerald-800 text-white border-emerald-950 shadow-xs font-heading'
+                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+
+              {/* Search Bar */}
+              <div className="relative w-full lg:w-80">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder="Rechercher par mot-clé, auteur..."
+                  value={blogSearch}
+                  onChange={(e) => setBlogSearch(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                />
+              </div>
+            </div>
+
+            {/* Main Blog Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {blogPosts
+                .filter(b => blogCategoryFilter === 'Tous' || b.category === blogCategoryFilter)
+                .filter(b => 
+                  b.titre.toLowerCase().includes(blogSearch.toLowerCase()) || 
+                  b.excerpt.toLowerCase().includes(blogSearch.toLowerCase()) ||
+                  b.author.toLowerCase().includes(blogSearch.toLowerCase()) ||
+                  b.tags.some(t => t.toLowerCase().includes(blogSearch.toLowerCase()))
+                )
+                .map((post) => (
+                  <div
+                    key={post.id}
+                    className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group"
+                  >
+                    <div className="p-6 space-y-3">
+                      <div className="flex items-center justify-between text-[10px]">
+                        <span className="font-bold uppercase bg-emerald-50 text-emerald-900 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                          {post.category}
+                        </span>
+                        <span className="text-slate-500 font-mono flex items-center gap-1">
+                          <Clock className="w-3 h-3 text-emerald-700" /> {post.date}
+                        </span>
+                      </div>
+
+                      <h3 
+                        onClick={() => setSelectedBlogForModal(post)}
+                        className="font-bold text-lg text-slate-900 font-heading leading-snug group-hover:text-emerald-800 transition-colors cursor-pointer"
+                      >
+                        {post.titre}
+                      </h3>
+
+                      <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                        {post.excerpt}
+                      </p>
+
+                      <div className="flex flex-wrap gap-1 pt-1">
+                        {post.tags.map((tag, idx) => (
+                          <span key={idx} className="bg-slate-100 text-slate-600 text-[10px] font-medium px-2 py-0.5 rounded">
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="bg-slate-50 border-t border-slate-200 p-4 flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 bg-emerald-900 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                          {post.author.charAt(0)}
+                        </div>
+                        <span className="font-bold text-slate-700 text-[11px] truncate max-w-[100px]">{post.author}</span>
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <button 
+                          onClick={(e) => { e.stopPropagation(); handleLikeBlogPost(post.id); }}
+                          className="flex items-center gap-1 text-slate-500 hover:text-rose-600 font-bold text-[11px] transition-colors"
+                        >
+                          <ThumbsUp className="w-3.5 h-3.5 text-rose-500" /> {post.likes}
+                        </button>
+                        <button 
+                          onClick={() => setSelectedBlogForModal(post)}
+                          className="flex items-center gap-1 text-slate-500 hover:text-emerald-800 font-bold text-[11px] transition-colors"
+                        >
+                          <MessageSquare className="w-3.5 h-3.5 text-emerald-700" /> {post.comments.length}
+                        </button>
+                        <button 
+                          onClick={() => setSelectedBlogForModal(post)}
+                          className="text-emerald-800 font-bold text-[11px] hover:underline uppercase font-heading ml-1"
+                        >
+                          Lire
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
+        {/* PAGE 11: CONTACT */}
         {currentPage === 'contact' && (
           <div className="py-12 px-4 sm:px-6 max-w-7xl mx-auto space-y-8">
             <div className="border-b border-slate-200 pb-4">
@@ -1343,32 +1949,323 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-emerald-950 text-white text-xs py-10 px-4 sm:px-6 border-t-4 border-emerald-700 mt-auto">
+      {/* MODAL 1: ANNOUNCEMENT DETAIL READER */}
+      {selectedAnnouncementForModal && (
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white max-w-2xl w-full rounded-2xl border-2 border-emerald-800 shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div className="bg-emerald-950 text-white p-5 flex items-center justify-between border-b border-emerald-800">
+              <div className="flex items-center gap-2">
+                <Megaphone className="w-5 h-5 text-amber-400" />
+                <h3 className="font-bold text-base font-heading uppercase text-amber-400">
+                  Communiqué Officiel - ISTA Burhuza
+                </h3>
+              </div>
+              <button 
+                onClick={() => setSelectedAnnouncementForModal(null)}
+                className="text-slate-300 hover:text-white p-1 rounded-lg hover:bg-emerald-900 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4 max-h-[75vh] overflow-y-auto text-xs">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                <span className="bg-emerald-100 text-emerald-900 font-bold uppercase px-3 py-1 rounded-full border border-emerald-300">
+                  Émetteur: {selectedAnnouncementForModal.auteurRole}
+                </span>
+                <span className="text-slate-500 font-mono">Date de publication: {selectedAnnouncementForModal.date}</span>
+              </div>
+
+              <h2 className="text-xl font-bold font-heading text-slate-900 leading-snug">
+                {selectedAnnouncementForModal.titre}
+              </h2>
+
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl font-medium text-amber-950">
+                Public Cible Concerné: <strong>{selectedAnnouncementForModal.cible}</strong>
+              </div>
+
+              <div className="text-slate-700 space-y-3 leading-relaxed text-sm whitespace-pre-line font-normal">
+                {selectedAnnouncementForModal.contenu}
+              </div>
+            </div>
+
+            <div className="bg-slate-50 border-t border-slate-200 p-4 flex items-center justify-between">
+              <span className="text-[11px] text-slate-500">Document authentifié par le Secrétariat Général Académique</span>
+              <button
+                onClick={() => setSelectedAnnouncementForModal(null)}
+                className="bg-emerald-800 text-white font-bold text-xs uppercase px-5 py-2.5 rounded-xl border border-emerald-950 font-heading"
+              >
+                Fermer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 2: BLOG ARTICLE READER & COMMENTS */}
+      {selectedBlogForModal && (
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white max-w-3xl w-full rounded-2xl border-2 border-emerald-800 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            {/* Header */}
+            <div className="bg-emerald-950 text-white p-5 flex items-center justify-between border-b border-emerald-800 flex-shrink-0">
+              <div className="flex items-center gap-2">
+                <Newspaper className="w-5 h-5 text-amber-400" />
+                <span className="font-bold text-xs font-heading uppercase text-amber-400">
+                  Article de Blog • {selectedBlogForModal.category}
+                </span>
+              </div>
+              <button 
+                onClick={() => setSelectedBlogForModal(null)}
+                className="text-slate-300 hover:text-white p-1 rounded-lg hover:bg-emerald-900 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Scrollable Body */}
+            <div className="p-6 overflow-y-auto space-y-6 text-xs flex-1">
+              <div className="space-y-3 border-b border-slate-200 pb-4">
+                <div className="flex items-center justify-between text-slate-500">
+                  <span>Par <strong className="text-slate-900">{selectedBlogForModal.author}</strong> ({selectedBlogForModal.authorRole})</span>
+                  <span>{selectedBlogForModal.date} • {selectedBlogForModal.readTime}</span>
+                </div>
+
+                <h1 className="text-2xl font-bold font-heading text-slate-900 leading-snug">
+                  {selectedBlogForModal.titre}
+                </h1>
+
+                <div className="flex flex-wrap gap-1.5">
+                  {selectedBlogForModal.tags.map((tag, i) => (
+                    <span key={i} className="bg-emerald-50 text-emerald-900 font-bold px-2.5 py-0.5 rounded-md border border-emerald-200 text-[10px]">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Full Content */}
+              <div className="text-slate-800 text-sm leading-relaxed whitespace-pre-line space-y-4">
+                {selectedBlogForModal.fullText}
+              </div>
+
+              {/* Like bar */}
+              <div className="pt-4 border-t border-slate-200 flex items-center justify-between">
+                <button
+                  onClick={() => handleLikeBlogPost(selectedBlogForModal.id)}
+                  className="bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold px-4 py-2 rounded-xl border border-rose-200 flex items-center gap-2 text-xs transition-colors"
+                >
+                  <ThumbsUp className="w-4 h-4 fill-rose-500" />
+                  <span>J'aime ({selectedBlogForModal.likes})</span>
+                </button>
+                <span className="text-slate-500 font-medium">{selectedBlogForModal.comments.length} commentaire(s)</span>
+              </div>
+
+              {/* Comments Section */}
+              <div className="space-y-4 pt-4 border-t border-slate-200">
+                <h3 className="font-bold text-sm text-emerald-950 font-heading uppercase flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4 text-emerald-700" /> Commentaires & Réactions
+                </h3>
+
+                {/* Add Comment Box */}
+                <form 
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleAddComment(selectedBlogForModal.id);
+                  }}
+                  className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <input
+                      type="text"
+                      placeholder="Votre nom complet"
+                      value={commentAuthor}
+                      onChange={(e) => setCommentAuthor(e.target.value)}
+                      required
+                      className="p-2 bg-white border border-slate-300 rounded-lg text-xs font-medium"
+                    />
+                  </div>
+                  <textarea
+                    rows={2}
+                    placeholder="Écrivez votre réaction ou votre question académique..."
+                    value={newCommentText}
+                    onChange={(e) => setNewCommentText(e.target.value)}
+                    required
+                    className="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs font-medium"
+                  ></textarea>
+                  <button
+                    type="submit"
+                    className="bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs uppercase px-4 py-2 rounded-lg border border-emerald-950 font-heading"
+                  >
+                    Publier le Commentaire
+                  </button>
+                </form>
+
+                {/* Comments List */}
+                <div className="space-y-3">
+                  {selectedBlogForModal.comments.length === 0 ? (
+                    <p className="text-slate-500 text-xs italic">Aucun commentaire pour l'instant. Soyez le premier à réagir !</p>
+                  ) : (
+                    selectedBlogForModal.comments.map((comm) => (
+                      <div key={comm.id} className="bg-white p-3.5 rounded-xl border border-slate-200 space-y-1">
+                        <div className="flex items-center justify-between text-[11px]">
+                          <strong className="text-emerald-950 font-bold">{comm.author}</strong>
+                          <span className="text-slate-400">{comm.date}</span>
+                        </div>
+                        <p className="text-xs text-slate-700 leading-relaxed">{comm.text}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 3: SUBMIT NEW ARTICLE PROPOSAL */}
+      {showArticleSubmissionModal && (
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white max-w-xl w-full rounded-2xl border-2 border-emerald-800 shadow-2xl overflow-hidden">
+            <div className="bg-emerald-950 text-white p-5 flex items-center justify-between border-b border-emerald-800">
+              <div className="flex items-center gap-2">
+                <Plus className="w-5 h-5 text-amber-400" />
+                <h3 className="font-bold text-base font-heading uppercase text-amber-400">
+                  Proposer un Article de Blog
+                </h3>
+              </div>
+              <button 
+                onClick={() => setShowArticleSubmissionModal(false)}
+                className="text-slate-300 hover:text-white p-1 rounded-lg hover:bg-emerald-900 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddBlogArticle} className="p-6 space-y-3.5 text-xs">
+              <p className="text-slate-600">
+                Votre proposition sera relue par le comité éditorial de l'ISTA Burhuza avant publication sur le portail public.
+              </p>
+
+              <div>
+                <label className="block font-bold text-slate-800 uppercase mb-1">Titre de l'Article</label>
+                <input
+                  type="text"
+                  required
+                  value={newBlogData.titre}
+                  onChange={(e) => setNewBlogData({ ...newBlogData, titre: e.target.value })}
+                  placeholder="Ex: Projet de centrale solaire hybride par L3 Électrique"
+                  className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-bold text-slate-800 uppercase mb-1">Auteur</label>
+                  <input
+                    type="text"
+                    required
+                    value={newBlogData.author}
+                    onChange={(e) => setNewBlogData({ ...newBlogData, author: e.target.value })}
+                    placeholder="Votre nom"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium"
+                  />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-800 uppercase mb-1">Catégorie</label>
+                  <select
+                    value={newBlogData.category}
+                    onChange={(e) => setNewBlogData({ ...newBlogData, category: e.target.value as any })}
+                    className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium"
+                  >
+                    <option value="Recherche & Tech">Recherche & Tech</option>
+                    <option value="Vie Estudiantine">Vie Estudiantine</option>
+                    <option value="Projets Académiques">Projets Académiques</option>
+                    <option value="Partenariats">Partenariats</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-800 uppercase mb-1">Résumé Court (Accroche)</label>
+                <input
+                  type="text"
+                  required
+                  value={newBlogData.excerpt}
+                  onChange={(e) => setNewBlogData({ ...newBlogData, excerpt: e.target.value })}
+                  placeholder="2-3 phrases résumant le sujet..."
+                  className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-800 uppercase mb-1">Contenu Intégral de l'Article</label>
+                <textarea
+                  rows={5}
+                  required
+                  value={newBlogData.fullText}
+                  onChange={(e) => setNewBlogData({ ...newBlogData, fullText: e.target.value })}
+                  placeholder="Développez votre article ici..."
+                  className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium"
+                ></textarea>
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-800 uppercase mb-1">Mots-clés (séparés par des virgules)</label>
+                <input
+                  type="text"
+                  value={newBlogData.tags}
+                  onChange={(e) => setNewBlogData({ ...newBlogData, tags: e.target.value })}
+                  placeholder="ISTA, Solaire, Burhuza, Walungu"
+                  className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-medium"
+                />
+              </div>
+
+              <div className="pt-3 border-t border-slate-200 flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowArticleSubmissionModal(false)}
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold uppercase rounded-xl"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-bold uppercase rounded-xl border border-emerald-950 font-heading"
+                >
+                  Soumettre l'Article
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Footer without border */}
+      <footer className="bg-emerald-950 text-white text-xs py-10 px-4 sm:px-6 mt-auto">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-emerald-700 text-white flex items-center justify-center font-bold text-sm font-heading">ISTA</div>
-              <strong className="text-base font-bold font-heading uppercase text-amber-400">ISTA BURHUZA</strong>
+            <div className="flex items-center gap-3">
+              <img src={istaLogo} alt="Logo ISTA" referrerPolicy="no-referrer" className="h-12 w-auto object-contain" />
+              <strong className="text-base font-bold font-heading uppercase text-amber-400 tracking-wide">ISTA BURHUZA</strong>
             </div>
-            <p className="text-[11px] text-emerald-200 leading-relaxed">
+            <p className="text-[11px] text-slate-200 leading-relaxed font-normal">
               Institut Supérieur de Techniques Appliquées. Établissement public d'enseignement supérieur technique au Sud-Kivu (RDC).
             </p>
           </div>
 
           <div>
             <h4 className="font-bold text-amber-400 font-heading uppercase mb-3 text-xs">Accès Rapide</h4>
-            <ul className="space-y-1.5 text-[11px] text-emerald-200">
-              <li><button onClick={() => setCurrentPage('registration')} className="hover:underline">Inscription en Ligne</button></li>
-              <li><button onClick={() => setCurrentPage('schedule')} className="hover:underline">Horaires des Cours</button></li>
-              <li><button onClick={() => setCurrentPage('transcripts')} className="hover:underline">Relevés de Notes</button></li>
-              <li><button onClick={() => setCurrentPage('programs')} className="hover:underline">Sections LMD</button></li>
+            <ul className="space-y-1.5 text-[11px] text-slate-200">
+              <li><button onClick={() => setCurrentPage('registration')} className="hover:text-amber-300 transition-colors">Inscription en Ligne</button></li>
+              <li><button onClick={() => setCurrentPage('schedule')} className="hover:text-amber-300 transition-colors">Horaires des Cours</button></li>
+              <li><button onClick={() => setCurrentPage('transcripts')} className="hover:text-amber-300 transition-colors">Relevés de Notes</button></li>
+              <li><button onClick={() => setCurrentPage('programs')} className="hover:text-amber-300 transition-colors">Sections LMD</button></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-bold text-amber-400 font-heading uppercase mb-3 text-xs">Sections Agréées</h4>
-            <ul className="space-y-1.5 text-[11px] text-emerald-200">
+            <ul className="space-y-1.5 text-[11px] text-slate-200">
               <li>Informatique Appliquée</li>
               <li>Génie Électrique</li>
               <li>Génie Mécanique</li>
@@ -1379,18 +2276,18 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
 
           <div>
             <h4 className="font-bold text-amber-400 font-heading uppercase mb-3 text-xs">Administration (SIGU)</h4>
-            <p className="text-[11px] text-emerald-200 mb-3">Accès réservé aux enseignants, chefs de section, président de jury et direction.</p>
+            <p className="text-[11px] text-slate-200 mb-3 leading-relaxed">Accès réservé aux enseignants, chefs de section, président de jury et direction.</p>
             {isLoggedIn ? (
               <button
                 onClick={onGoToDashboard}
-                className="bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs uppercase px-4 py-2 flex items-center gap-2 border border-emerald-500 font-heading"
+                className="bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs uppercase px-4 py-2 rounded-lg flex items-center gap-2 border border-emerald-500 font-heading transition-colors"
               >
-                <ShieldCheck className="w-4 h-4" /> Accéder au SIGU
+                <ShieldCheck className="w-4 h-4 text-amber-300" /> Accéder au SIGU
               </button>
             ) : (
               <button
                 onClick={onLoginRequest}
-                className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase px-4 py-2 flex items-center gap-2 border border-amber-600 font-heading"
+                className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase px-4 py-2 rounded-lg flex items-center gap-2 border border-amber-600 font-heading transition-colors"
               >
                 <LogIn className="w-4 h-4" /> Se Connecter au SIGU
               </button>
@@ -1398,9 +2295,9 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto pt-6 border-t border-emerald-900 flex flex-col sm:flex-row justify-between items-center text-[10px] text-emerald-300">
+        <div className="max-w-7xl mx-auto pt-6 border-t border-emerald-900/60 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-300 gap-2">
           <span>© {new Date().getFullYear()} ISTA BURHUZA • Ministère de l'ESU, République Démocratique du Congo. Tous droits réservés.</span>
-          <span>Portail Universitaire SIGU v1.0</span>
+          <span className="bg-emerald-900/80 px-2.5 py-0.5 rounded-full border border-emerald-800 text-emerald-200 font-mono">Portail Universitaire SIGU v1.0</span>
         </div>
       </footer>
     </div>

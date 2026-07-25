@@ -50,6 +50,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState<User>(INITIAL_USERS[0]);
   const [showRoleSelector, setShowRoleSelector] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Application Data States
   const [students, setStudents] = useState<Student[]>(INITIAL_STUDENTS);
@@ -176,7 +177,7 @@ export default function App() {
         />
       ) : (
         /* PROTECTED DASHBOARD ROUTE (/dashboard) */
-        <div className="min-h-screen flex flex-col bg-slate-100">
+        <div className="h-screen max-h-screen flex flex-col bg-slate-100 overflow-hidden">
           {/* Official Protected Header */}
           <Header
             currentUser={currentUser}
@@ -184,19 +185,22 @@ export default function App() {
             unreadCount={unreadMessagesCount}
             onGoToPublicSite={() => setCurrentView('public')}
             onLogout={handleLogout}
+            onToggleMobileSidebar={() => setIsMobileSidebarOpen(prev => !prev)}
           />
 
-          {/* Main Content Layout with Sidebar */}
-          <div className="flex-1 flex flex-col md:flex-row max-w-[1400px] w-full mx-auto p-3 sm:p-5 gap-5">
+          {/* Main Content Layout with Fixed Sidebar & Independent Main Scroll */}
+          <div className="flex-1 flex flex-col md:flex-row max-w-[1400px] w-full mx-auto p-3 sm:p-5 gap-5 min-h-0 overflow-hidden">
             {/* Navigation Sidebar */}
             <Sidebar
               activeTab={activeTab}
               setActiveTab={setActiveTab}
               userRole={currentUser.role}
+              isMobileOpen={isMobileSidebarOpen}
+              onCloseMobile={() => setIsMobileSidebarOpen(false)}
             />
 
-            {/* Tab Content View */}
-            <main id="sigu-main-content" className="flex-1 min-w-0">
+            {/* Independently Scrollable Main Content View */}
+            <main id="sigu-main-content" className="flex-1 min-w-0 h-full overflow-y-auto pr-1">
               {activeTab === 'dashboard' && (
                 <Dashboard
                   currentUser={currentUser}
@@ -283,8 +287,8 @@ export default function App() {
             </main>
           </div>
 
-          {/* Institutional Footer */}
-          <footer id="sigu-footer" className="bg-emerald-950 text-emerald-100 text-xs py-3 px-6 border-t border-emerald-900 mt-auto">
+          {/* Institutional Fixed Footer */}
+          <footer id="sigu-footer" className="bg-emerald-950 text-emerald-100 text-xs py-3 px-6 border-t border-emerald-900 flex-shrink-0 z-20">
             <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
               <div className="flex items-center gap-3">
                 <span className="bg-emerald-800 text-white font-bold px-2 py-0.5 text-[10px] uppercase font-heading">

@@ -14,11 +14,6 @@
   .font-title {
     font-family: 'Poppins', 'Montserrat', sans-serif;
   }
-
-  /* Force rounded 0 across standard UI elements */
-  *, ::before, ::after {
-    border-radius: 0px !important;
-  }
 }
 
 /* Custom scrollbars */
@@ -28,11 +23,11 @@
 }
 ::-webkit-scrollbar-track {
   background: #f1f5f9;
-  border: 1px solid #cbd5e1;
 }
 ::-webkit-scrollbar-thumb {
-  background: #047857;
+  background: #059669;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #064e3b;
+  background: #047857;
 }

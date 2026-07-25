@@ -1,5 +1,6 @@
 import React from 'react';
 import { Role } from '../types';
+import istaLogo from '../assets/images/ista_logo_1784981336164.jpg';
 import { 
   LayoutDashboard, 
   Users, 
@@ -10,7 +11,8 @@ import {
   FileText, 
   MessageSquare, 
   CalendarDays,
-  ChevronRight
+  ChevronRight,
+  X
 } from 'lucide-react';
 
 export type TabType = 
@@ -28,6 +30,8 @@ interface SidebarProps {
   activeTab: TabType;
   setActiveTab: (tab: TabType) => void;
   userRole: Role;
+  isMobileOpen?: boolean;
+  onCloseMobile?: () => void;
 }
 
 interface NavItem {
@@ -104,21 +108,48 @@ const NAV_ITEMS: NavItem[] = [
   }
 ];
 
-export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, userRole }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ 
+  activeTab, 
+  setActiveTab, 
+  userRole,
+  isMobileOpen = false,
+  onCloseMobile
+}) => {
   const filteredItems = NAV_ITEMS.filter(item => item.rolesAllowed.includes(userRole));
 
-  return (
-    <aside id="sigu-sidebar" className="w-full md:w-64 bg-white text-slate-900 flex-shrink-0 border border-emerald-900/20 shadow-xs">
-      <div className="p-3 border-b border-emerald-900/20 bg-emerald-950 text-white">
-        <span className="text-[10px] uppercase font-bold text-amber-400 block mb-0.5 tracking-wider">
-          CAMPUS ISTA BURHUZA
-        </span>
-        <h2 className="font-heading font-bold text-xs text-white uppercase tracking-wider">
-          MODULES D'ADMINISTRATION
-        </h2>
+  const handleSelectTab = (tab: TabType) => {
+    setActiveTab(tab);
+    if (onCloseMobile) onCloseMobile();
+  };
+
+  const navContent = (
+    <div className="flex flex-col h-full bg-white rounded-xl border border-emerald-900/15 overflow-hidden shadow-sm">
+      {/* Sidebar Header */}
+      <div className="p-3.5 bg-emerald-950 text-white flex items-center justify-between border-b border-emerald-900">
+        <div className="flex items-center space-x-2.5">
+          <img src={istaLogo} alt="Logo ISTA" referrerPolicy="no-referrer" className="w-8 h-8 object-contain aspect-square" />
+          <div>
+            <span className="text-[10px] uppercase font-bold text-amber-400 block leading-tight">
+              CAMPUS ISTA BURHUZA
+            </span>
+            <h2 className="font-heading font-bold text-xs text-white uppercase tracking-wider">
+              MODULES D'ADMINISTRATION
+            </h2>
+          </div>
+        </div>
+
+        {onCloseMobile && (
+          <button 
+            onClick={onCloseMobile} 
+            className="md:hidden p-1 text-emerald-300 hover:text-white hover:bg-emerald-900 rounded-md transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
       </div>
 
-      <nav className="p-1 space-y-1">
+      {/* Nav List */}
+      <nav className="p-2 space-y-1.5 flex-1 overflow-y-auto">
         {filteredItems.map(item => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -127,15 +158,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, userR
             <button
               key={item.id}
               id={`nav-item-${item.id}`}
-              onClick={() => setActiveTab(item.id)}
-              className={`w-full text-left px-3 py-2 flex items-center justify-between transition-colors border ${
+              onClick={() => handleSelectTab(item.id)}
+              className={`w-full text-left px-3 py-2.5 rounded-lg flex items-center justify-between transition-all border ${
                 isActive 
-                  ? 'bg-emerald-900 text-white font-bold border-emerald-950 border-l-4 border-l-amber-400' 
+                  ? 'bg-emerald-900 text-white font-bold border-emerald-950 shadow-xs' 
                   : 'bg-white text-slate-800 hover:bg-emerald-50 hover:text-emerald-900 border-transparent font-medium'
               }`}
             >
-              <div className="flex items-center space-x-2.5 min-w-0">
-                <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-amber-400' : 'text-emerald-800'}`} />
+              <div className="flex items-center space-x-3 min-w-0">
+                <div className={`p-1.5 rounded-md ${isActive ? 'bg-amber-400 text-slate-950' : 'bg-emerald-100 text-emerald-900'}`}>
+                  <Icon className="w-4 h-4" />
+                </div>
                 <div className="truncate">
                   <div className="text-xs leading-none uppercase font-heading font-bold">{item.label}</div>
                   <div className={`text-[10px] truncate mt-1 ${isActive ? 'text-emerald-200' : 'text-slate-500'}`}>
@@ -152,17 +185,42 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, userR
       </nav>
 
       {/* Institutional Contact Footnote */}
-      <div className="p-3 border-t border-emerald-900/20 mt-4 bg-slate-50">
+      <div className="p-3 border-t border-emerald-900/10 bg-slate-50 rounded-b-xl">
         <div className="text-[10px] font-bold font-heading text-emerald-950 uppercase tracking-wider">
           SECRÉTARIAT ACADÉMIQUE
         </div>
-        <div className="text-[10px] text-slate-600 mt-1 leading-tight">
+        <div className="text-[10px] text-slate-600 mt-0.5 leading-tight">
           contact@ista-burhuza.ac.cd
         </div>
         <div className="text-[10px] font-bold text-emerald-800 mt-0.5">
           +243 997 123 456
         </div>
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar (Persistent, fixed height, internal scroll) */}
+      <aside id="sigu-sidebar" className="hidden md:block w-64 flex-shrink-0 h-full overflow-hidden">
+        {navContent}
+      </aside>
+
+      {/* Mobile Slide-over Drawer */}
+      {isMobileOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex">
+          {/* Backdrop Overlay */}
+          <div 
+            className="fixed inset-0 bg-emerald-950/80 backdrop-blur-xs transition-opacity"
+            onClick={onCloseMobile}
+          />
+          
+          {/* Slide Drawer Panel */}
+          <div className="relative w-80 max-w-[85vw] h-full p-3 z-10 animate-in slide-in-from-left duration-200">
+            {navContent}
+          </div>
+        </div>
+      )}
+    </>
   );
 };

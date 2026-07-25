@@ -48,7 +48,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
   return (
     <div id="sigu-dashboard-view" className="space-y-6 font-sans">
       {/* Welcome Institutional Banner */}
-      <div className="bg-emerald-950 text-white p-6 border-2 border-emerald-900 shadow-sm relative overflow-hidden">
+      <div className="bg-emerald-950 text-white p-6 rounded-2xl border border-emerald-900 shadow-sm relative overflow-hidden">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase tracking-wider mb-1 font-heading">
@@ -58,7 +58,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
               Tableau de Bord — {currentUser.name}
             </h2>
             <p className="text-emerald-100 text-xs mt-1 max-w-2xl font-medium">
-              Profil actif: <span className="bg-emerald-800 text-white font-bold px-2 py-0.5 border border-emerald-600 uppercase">{currentUser.role.replace('_', ' ')}</span> | Département: <strong className="text-amber-300">{currentUser.department}</strong>
+              Profil actif: <span className="bg-emerald-800 text-white font-bold px-2.5 py-0.5 rounded-full border border-emerald-600 uppercase">{currentUser.role.replace('_', ' ')}</span> | Département: <strong className="text-amber-300">{currentUser.department}</strong>
             </p>
           </div>
 
@@ -66,14 +66,14 @@ export const Dashboard: React.FC<DashboardProps> = ({
             <button
               id="btn-quick-delib"
               onClick={() => onNavigateTab('deliberation')}
-              className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2.5 text-xs flex items-center gap-2 border border-amber-600 transition-all uppercase font-heading"
+              className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 border border-amber-600 transition-all uppercase font-heading shadow-xs"
             >
               <Award className="w-4 h-4" /> Jury LMD & Délibérations
             </button>
             <button
               id="btn-quick-finances"
               onClick={() => onNavigateTab('finances')}
-              className="bg-emerald-800 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 text-xs border border-emerald-600 flex items-center gap-2 transition-all uppercase font-heading"
+              className="bg-emerald-800 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs border border-emerald-600 flex items-center gap-2 transition-all uppercase font-heading shadow-xs"
             >
               <Wallet className="w-4 h-4 text-amber-300" /> Caisse & Finances
             </button>
@@ -86,11 +86,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
         {/* Card 1: Students */}
         <div 
           onClick={() => onNavigateTab('students')}
-          className="bg-white p-5 border-2 border-slate-200 hover:border-emerald-800 transition-all cursor-pointer group flex flex-col justify-between shadow-xs"
+          className="bg-white p-5 rounded-xl border border-slate-200/80 hover:border-emerald-700 transition-all cursor-pointer group flex flex-col justify-between shadow-xs hover:shadow-md"
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wide font-heading">Effectif Étudiants</span>
-            <div className="w-8 h-8 bg-emerald-100 text-emerald-900 group-hover:bg-emerald-800 group-hover:text-white flex items-center justify-center font-bold text-xs border border-emerald-300 transition-colors">
+            <div className="w-9 h-9 bg-emerald-100 text-emerald-900 group-hover:bg-emerald-800 group-hover:text-white flex items-center justify-center font-bold text-xs rounded-lg transition-colors">
               <Users className="w-4 h-4" />
             </div>
           </div>
@@ -109,17 +109,17 @@ export const Dashboard: React.FC<DashboardProps> = ({
         {/* Card 2: Financial Recovery */}
         <div 
           onClick={() => onNavigateTab('finances')}
-          className="bg-white p-5 border-2 border-slate-200 hover:border-emerald-800 transition-all cursor-pointer group flex flex-col justify-between shadow-xs"
+          className="bg-white p-5 rounded-xl border border-slate-200/80 hover:border-emerald-700 transition-all cursor-pointer group flex flex-col justify-between shadow-xs hover:shadow-md"
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wide font-heading">Recouvrement Frais</span>
-            <div className="w-8 h-8 bg-emerald-100 text-emerald-900 group-hover:bg-emerald-800 group-hover:text-white flex items-center justify-center font-bold text-xs border border-emerald-300 transition-colors">
+            <div className="w-9 h-9 bg-emerald-100 text-emerald-900 group-hover:bg-emerald-800 group-hover:text-white flex items-center justify-center font-bold text-xs rounded-lg transition-colors">
               <Wallet className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between font-heading">
             <span className="text-3xl font-extrabold text-emerald-900">${totalPaidUSD} <span className="text-xs font-bold text-slate-500">USD</span></span>
-            <span className="text-[10px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 border border-amber-300">
+            <span className="text-[10px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full border border-amber-300">
               {recoveryRate}% Récouvré
             </span>
           </div>
@@ -132,11 +132,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
         {/* Card 3: Courses & Credits */}
         <div 
           onClick={() => onNavigateTab('courses')}
-          className="bg-white p-5 border-2 border-slate-200 hover:border-emerald-800 transition-all cursor-pointer group flex flex-col justify-between shadow-xs"
+          className="bg-white p-5 rounded-xl border border-slate-200/80 hover:border-emerald-700 transition-all cursor-pointer group flex flex-col justify-between shadow-xs hover:shadow-md"
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wide font-heading">Programmes & Cours</span>
-            <div className="w-8 h-8 bg-emerald-100 text-emerald-900 group-hover:bg-emerald-800 group-hover:text-white flex items-center justify-center font-bold text-xs border border-emerald-300 transition-colors">
+            <div className="w-9 h-9 bg-emerald-100 text-emerald-900 group-hover:bg-emerald-800 group-hover:text-white flex items-center justify-center font-bold text-xs rounded-lg transition-colors">
               <GraduationCap className="w-4 h-4" />
             </div>
           </div>
@@ -155,17 +155,17 @@ export const Dashboard: React.FC<DashboardProps> = ({
         {/* Card 4: Active Deliberations */}
         <div 
           onClick={() => onNavigateTab('deliberation')}
-          className="bg-white p-5 border-2 border-slate-200 hover:border-emerald-800 transition-all cursor-pointer group flex flex-col justify-between shadow-xs"
+          className="bg-white p-5 rounded-xl border border-slate-200/80 hover:border-emerald-700 transition-all cursor-pointer group flex flex-col justify-between shadow-xs hover:shadow-md"
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wide font-heading">Sessions du Jury</span>
-            <div className="w-8 h-8 bg-emerald-100 text-emerald-900 group-hover:bg-emerald-800 group-hover:text-white flex items-center justify-center font-bold text-xs border border-emerald-300 transition-colors">
+            <div className="w-9 h-9 bg-emerald-100 text-emerald-900 group-hover:bg-emerald-800 group-hover:text-white flex items-center justify-center font-bold text-xs rounded-lg transition-colors">
               <Award className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between font-heading">
             <span className="text-3xl font-extrabold text-slate-900">{deliberations.length}</span>
-            <span className="text-[10px] font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 border border-emerald-300 uppercase">
+            <span className="text-[10px] font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-full border border-emerald-300 uppercase">
               {activeDeliberations} En cours
             </span>
           </div>
