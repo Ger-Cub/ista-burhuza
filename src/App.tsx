@@ -11,7 +11,8 @@ import {
   DocumentItem, 
   Announcement, 
   InternalMessage, 
-  AcademicEvent 
+  AcademicEvent,
+  BlogPost
 } from './types';
 
 import { 
@@ -26,7 +27,8 @@ import {
   INITIAL_DOCUMENTS, 
   INITIAL_ANNOUNCEMENTS, 
   INITIAL_MESSAGES, 
-  INITIAL_EVENTS 
+  INITIAL_EVENTS,
+  INITIAL_BLOG_POSTS
 } from './data/mockData';
 
 import { PublicWebsite } from './components/PublicWebsite';
@@ -42,6 +44,7 @@ import { HRModule } from './components/HRModule';
 import { DocumentsModule } from './components/DocumentsModule';
 import { CommunicationModule } from './components/CommunicationModule';
 import { EventsModule } from './components/EventsModule';
+import { BlogModule } from './components/BlogModule';
 
 export default function App() {
   // Navigation & Authentication State
@@ -64,8 +67,20 @@ export default function App() {
   const [announcements, setAnnouncements] = useState<Announcement[]>(INITIAL_ANNOUNCEMENTS);
   const [messages, setMessages] = useState<InternalMessage[]>(INITIAL_MESSAGES);
   const [events, setEvents] = useState<AcademicEvent[]>(INITIAL_EVENTS);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>(INITIAL_BLOG_POSTS);
 
   // Handlers
+  const handleAddBlogPost = (newPost: BlogPost) => {
+    setBlogPosts(prev => [newPost, ...prev]);
+  };
+
+  const handleUpdateBlogPost = (updatedPost: BlogPost) => {
+    setBlogPosts(prev => prev.map(p => p.id === updatedPost.id ? updatedPost : p));
+  };
+
+  const handleDeleteBlogPost = (postId: string) => {
+    setBlogPosts(prev => prev.filter(p => p.id !== postId));
+  };
   const handleAddStudent = (newStudent: Student) => {
     setStudents(prev => [newStudent, ...prev]);
   };
@@ -164,6 +179,8 @@ export default function App() {
           schedules={schedules}
           grades={grades}
           announcements={announcements}
+          blogPosts={blogPosts}
+          onProposeArticle={handleAddBlogPost}
           onLoginRequest={handleOpenLogin}
           onGoToDashboard={() => {
             if (isLoggedIn) {
@@ -282,6 +299,15 @@ export default function App() {
                 <EventsModule
                   events={events}
                   onAddEvent={handleAddEvent}
+                />
+              )}
+
+              {activeTab === 'blog' && (
+                <BlogModule
+                  blogPosts={blogPosts}
+                  onAddBlogPost={handleAddBlogPost}
+                  onUpdateBlogPost={handleUpdateBlogPost}
+                  onDeleteBlogPost={handleDeleteBlogPost}
                 />
               )}
             </main>

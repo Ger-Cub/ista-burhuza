@@ -11,6 +11,7 @@ import {
   FileText, 
   MessageSquare, 
   CalendarDays,
+  Newspaper,
   ChevronRight,
   X
 } from 'lucide-react';
@@ -24,12 +25,14 @@ export type TabType =
   | 'hr'
   | 'documents'
   | 'communication'
-  | 'events';
+  | 'events'
+  | 'blog';
 
 interface SidebarProps {
   activeTab: TabType;
   setActiveTab: (tab: TabType) => void;
   userRole: Role;
+  pendingBlogCount?: number;
   isMobileOpen?: boolean;
   onCloseMobile?: () => void;
 }
@@ -40,6 +43,7 @@ interface NavItem {
   icon: React.ElementType;
   description: string;
   rolesAllowed: Role[];
+  badgeCount?: number;
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -79,6 +83,13 @@ const NAV_ITEMS: NavItem[] = [
     rolesAllowed: ['admin', 'financier', 'etudiant']
   },
   {
+    id: 'blog',
+    label: 'Articles de Blog',
+    icon: Newspaper,
+    description: 'Modération, Propositions & News',
+    rolesAllowed: ['admin', 'chef_section', 'president_jury', 'secretaire_jury', 'enseignant', 'etudiant', 'financier']
+  },
+  {
     id: 'hr',
     label: 'Ressources Humaines',
     icon: UserCheck,
@@ -112,6 +123,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   activeTab, 
   setActiveTab, 
   userRole,
+  pendingBlogCount = 0,
   isMobileOpen = false,
   onCloseMobile
 }) => {
@@ -153,6 +165,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {filteredItems.map(item => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
+          const isBlog = item.id === 'blog';
 
           return (
             <button
@@ -166,11 +179,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
               }`}
             >
               <div className="flex items-center space-x-3 min-w-0">
-                <div className={`p-1.5 rounded-md ${isActive ? 'bg-amber-400 text-slate-950' : 'bg-emerald-100 text-emerald-900'}`}>
+                <div className={`p-1.5 rounded-md relative ${isActive ? 'bg-amber-400 text-slate-950' : 'bg-emerald-100 text-emerald-900'}`}>
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="truncate">
-                  <div className="text-xs leading-none uppercase font-heading font-bold">{item.label}</div>
+                  <div className="text-xs leading-none uppercase font-heading font-bold flex items-center gap-1.5">
+                    <span>{item.label}</span>
+                    {isBlog && pendingBlogCount > 0 && (
+                      <span className="bg-amber-500 text-slate-950 text-[10px] font-black px-1.5 py-0.2 rounded-full">
+                        {pendingBlogCount}
+                      </span>
+                    )}
+                  </div>
                   <div className={`text-[10px] truncate mt-1 ${isActive ? 'text-emerald-200' : 'text-slate-500'}`}>
                     {item.description}
                   </div>
@@ -224,3 +244,4 @@ export const Sidebar: React.FC<SidebarProps> = ({
     </>
   );
 };
+

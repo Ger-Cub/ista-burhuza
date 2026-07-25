@@ -10,7 +10,8 @@ import {
   DocumentItem, 
   Announcement, 
   InternalMessage, 
-  AcademicEvent 
+  AcademicEvent,
+  BlogPost
 } from '../types';
 
 export const CURRENT_ACADEMIC_YEAR = '2025-2026';
@@ -785,3 +786,93 @@ export const INITIAL_EVENTS: AcademicEvent[] = [
     concerne: 'Communauté Universitaire'
   }
 ];
+
+export const INITIAL_BLOG_POSTS: BlogPost[] = [
+  {
+    id: "blog-1",
+    titre: "Inauguration du Nouveau Laboratoire de Génie Informatique à Burhuza",
+    category: "Recherche & Tech",
+    author: "Comité de Rédaction ISTA",
+    authorRole: "Service de Communication",
+    date: "2026-07-22",
+    readTime: "4 min de lecture",
+    excerpt: "Les étudiants en Informatique Appliquée bénéficient désormais de 40 postes informatiques interconnectés pour les travaux pratiques en génie logiciel.",
+    fullText: `Dans le cadre de la modernisation du Campus de Burhuza, le Comité de Gestion de l'ISTA a procédé à l'inauguration officielle des nouvelles installations du Laboratoire d'Informatique.
+
+Équipé de serveurs dédiés, d'une connexion haut débit et d'outils de développement de dernière génération, ce labo permettra aux étudiants des niveaux L1, L2 et L3 d'effectuer leurs séances de travaux pratiques.`,
+    tags: ['Informatique', 'Laboratoire', 'LMD', 'Technologie'],
+    featured: true,
+    likes: 42,
+    comments: [
+      { id: 'c1', author: 'Ir. Gloire M.', text: 'Une excellente initiative pour nos étudiants en L2 Informatique ! Bravo à la direction.', date: '2026-07-23' }
+    ],
+    statut: 'Publié'
+  },
+  {
+    id: "blog-2",
+    titre: "Calendrier Officiel des Soutenances de TFC et Mémoires - Session Aout 2026",
+    category: "Événements & Soutenances",
+    author: "Secrétariat Académique",
+    authorRole: "Secrétaire Général Académique",
+    date: "2026-07-20",
+    readTime: "3 min de lecture",
+    excerpt: "Publication des grilles de passage pour les présentations publiques des travaux de fin de cycle (TFC) dans toutes les sections agréées de l'ISTA Burhuza.",
+    fullText: `Le Secrétaire Général Académique porte à la connaissance de tous les étudiants finalistes qu'en vertu du calendrier académique officiel 2025-2026, les soutenances publiques des Travaux de Fin de Cycle (TFC) et Mémoires se tiendront du 10 au 15 août 2026.`,
+    tags: ['Soutenances', 'TFC', 'Examens', 'Graduation'],
+    featured: false,
+    likes: 28,
+    comments: [],
+    statut: 'Publié'
+  },
+  {
+    id: "blog-3",
+    titre: "Micro-centrale Solaire Autonome : La Section Génie Électrique déploie son prototype",
+    category: "Recherche & Tech",
+    author: "Prof. Marc KABAMBA",
+    authorRole: "Enseignant-Chercheur Génie Électrique",
+    date: "2026-07-15",
+    readTime: "5 min de lecture",
+    excerpt: "Conçue et assemblée sur le campus, une centrale photovoltaïque de 10 kVA fournit un éclairage continu et alimente les équipements de recherche de Burhuza.",
+    fullText: `Pour pallier les coupures de courant et promouvoir l'autonomie énergétique en milieu rural, les enseignants et étudiants de la Section Génie Électrique ont mis en place une micro-centrale solaire sur le toit du bâtiment administratif.`,
+    tags: ['Génie Électrique', 'Énergie Solaire', 'Autonomie'],
+    featured: false,
+    likes: 56,
+    comments: [],
+    statut: 'Publié'
+  },
+  {
+    id: "blog-4",
+    titre: "Projet de Système de Diagnostic Télé-médical par les Étudiants de L3 Informatique",
+    category: "Projets Académiques",
+    author: "MUGISHO CHIRIMWAMI Gloire",
+    authorRole: "Étudiant L3 Informatique Appliquée",
+    date: "2026-07-24",
+    readTime: "4 min de lecture",
+    excerpt: "Proposition d'un logiciel d'aide à la consultation médicale à distance connectant le Centre de Santé de Burhuza à l'Hôpital Général de Bukavu.",
+    fullText: `Dans le cadre de notre projet de fin de cycle, nous avons mis au point un prototype d'application web permettant le transfert sécurisé de dossiers médicaux et de télédiagnostic entre les zones rurales de Walungu et les médecins spécialistes de Bukavu.`,
+    tags: ['Santé', 'Telemedecine', 'Walungu', 'LMD'],
+    featured: false,
+    likes: 15,
+    comments: [],
+    statut: 'En attente',
+    submittedByEmail: 'mugisho.2025@etudiant.ista-bukavu.cd'
+  },
+  {
+    id: "blog-5",
+    titre: "Rapport d'Atelier : Maintenance des Turbines Hydrauliques en Milieu Rural",
+    category: "Vie du Campus",
+    author: "Ass. Alain CISHUGI",
+    authorRole: "Section Génie Mécanique",
+    date: "2026-07-23",
+    readTime: "3 min de lecture",
+    excerpt: "Compte-rendu du travail pratique de révision et d'équilibrage des pièces mécaniques réalisé sur le site d'expérimentation de Burhuza.",
+    fullText: `Les étudiants de la section Génie Mécanique ont mené une séance pratique d'analyse vibratoire et de démontage de turbines micro-hydro. Ce rapport résume les résultats techniques obtenus.`,
+    tags: ['Génie Mécanique', 'Hydraulique', 'Pratique'],
+    featured: false,
+    likes: 8,
+    comments: [],
+    statut: 'En attente',
+    submittedByEmail: 'alain.cishugi@ista-burhuza.ac.cd'
+  }
+];
+

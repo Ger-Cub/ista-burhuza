@@ -45,7 +45,7 @@ import {
   ThumbsUp,
   CalendarDays
 } from 'lucide-react';
-import { Student, Course, ScheduleItem, Grade, Announcement } from '../types';
+import { Student, Course, ScheduleItem, Grade, Announcement, BlogPost } from '../types';
 import heroBgImage from '../assets/images/university_hero_bg_1784981162011.jpg';
 import istaLogo from '../assets/images/ista_logo_1784981336164.jpg';
 
@@ -55,6 +55,8 @@ interface PublicWebsiteProps {
   schedules: ScheduleItem[];
   grades: Grade[];
   announcements: Announcement[];
+  blogPosts?: BlogPost[];
+  onProposeArticle?: (newPost: BlogPost) => void;
   onLoginRequest: () => void;
   onGoToDashboard: () => void;
   isLoggedIn: boolean;
@@ -72,23 +74,6 @@ export type PublicPage =
   | 'transcripts' 
   | 'campus' 
   | 'contact';
-
-export interface BlogPost {
-  id: string;
-  titre: string;
-  category: 'Recherche & Tech' | 'Vie du Campus' | 'Événements & Soutenances' | 'Partenariats' | 'Infrastructures';
-  author: string;
-  authorRole?: string;
-  date: string;
-  readTime: string;
-  excerpt: string;
-  fullText: string;
-  tags: string[];
-  featured?: boolean;
-  likes: number;
-  comments: { id: string; author: string; text: string; date: string }[];
-  imageUrl?: string;
-}
 
 const INITIAL_BLOG_POSTS: BlogPost[] = [
   {
@@ -112,6 +97,7 @@ Le Directeur Général, Prof. Dieudonné KABANGA, a souligné l'importance de ce
     tags: ['Informatique', 'Laboratoire', 'LMD', 'Technologie'],
     featured: true,
     likes: 42,
+    statut: 'Publié',
     comments: [
       { id: 'c1', author: 'Ir. Gloire M.', text: 'Une excellente initiative pour nos étudiants en L2 Informatique ! Bravo à la direction.', date: '2026-07-23' },
       { id: 'c2', author: 'Etudiant L1', text: 'Merci pour ces machines performantes, les TP de langage C vont être géniaux !', date: '2026-07-23' }
@@ -137,6 +123,7 @@ Les jurys d'évaluation seront présidés par les Chefs de Travaux et Professeur
     tags: ['Soutenances', 'TFC', 'Examens', 'Graduation'],
     featured: false,
     likes: 28,
+    statut: 'Publié',
     comments: [
       { id: 'c3', author: 'MUKAMBA Jean-Luc', text: 'Informations bien reçues. À quel niveau peut-on consulter la liste des jurys ?', date: '2026-07-21' }
     ]
@@ -162,6 +149,7 @@ Cette réalisation démontre le savoir-faire pratique de l'ISTA Burhuza et const
     tags: ['Génie Électrique', 'Énergie Solaire', 'Autonomie', 'Innovation'],
     featured: false,
     likes: 56,
+    statut: 'Publié',
     comments: [
       { id: 'c4', author: 'Aline CHIRUZA', text: 'Magnifique travail des ingénieurs électriciens ! C\'est la preuve que Burhuza innove.', date: '2026-07-16' }
     ]
@@ -187,6 +175,7 @@ Bienvenue à tous les nouveaux futurs ingénieurs de l'ISTA Burhuza !`,
     tags: ['Inscriptions', 'Orientation', 'Vie Étudiante', 'LMD'],
     featured: false,
     likes: 31,
+    statut: 'Publié',
     comments: []
   },
   {
@@ -207,6 +196,7 @@ Ces conventions offrent :
     tags: ['Stages', 'Emploi', 'Partenariats', 'Génie Civil'],
     featured: false,
     likes: 47,
+    statut: 'Publié',
     comments: []
   }
 ];
@@ -217,6 +207,8 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
   schedules,
   grades,
   announcements,
+  blogPosts: propsBlogPosts,
+  onProposeArticle,
   onLoginRequest,
   onGoToDashboard,
   isLoggedIn,
@@ -226,7 +218,13 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Blog State & Modals
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>(INITIAL_BLOG_POSTS);
+  const [localBlogPosts, setLocalBlogPosts] = useState<BlogPost[]>(INITIAL_BLOG_POSTS);
+  
+  // Active blog posts list (prefer propsBlogPosts if supplied)
+  const allBlogPosts = propsBlogPosts || localBlogPosts;
+  // Public site only shows published articles
+  const blogPosts = allBlogPosts.filter(p => p.statut === 'Publié');
+
   const [selectedAnnouncementForModal, setSelectedAnnouncementForModal] = useState<Announcement | null>(null);
   const [selectedBlogForModal, setSelectedBlogForModal] = useState<BlogPost | null>(null);
   const [announcementFilter, setAnnouncementFilter] = useState('Tous');
@@ -285,17 +283,24 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
       titre: newBlogData.titre,
       category: newBlogData.category,
       author: newBlogData.author,
-      authorRole: 'Contributeur ISTA',
+      authorRole: 'Contributeur Externe',
       date: new Date().toISOString().split('T')[0],
       readTime: '3 min de lecture',
       excerpt: newBlogData.excerpt || newBlogData.fullText.substring(0, 140) + '...',
       fullText: newBlogData.fullText,
       tags: newBlogData.tags.split(',').map(t => t.trim()).filter(Boolean),
       featured: false,
-      likes: 1,
-      comments: []
+      likes: 0,
+      comments: [],
+      statut: 'En attente'
     };
-    setBlogPosts(prev => [newPost, ...prev]);
+
+    if (onProposeArticle) {
+      onProposeArticle(newPost);
+    } else {
+      setLocalBlogPosts(prev => [newPost, ...prev]);
+    }
+
     setNewBlogSuccess(true);
     setTimeout(() => {
       setNewBlogSuccess(false);
@@ -308,11 +313,11 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
         fullText: '',
         tags: 'Technologie, Burhuza'
       });
-    }, 1200);
+    }, 2500);
   };
 
   const handleLikeBlogPost = (postId: string) => {
-    setBlogPosts(prev => prev.map(p => p.id === postId ? { ...p, likes: p.likes + 1 } : p));
+    setLocalBlogPosts(prev => prev.map(p => p.id === postId ? { ...p, likes: p.likes + 1 } : p));
     if (selectedBlogForModal && selectedBlogForModal.id === postId) {
       setSelectedBlogForModal(prev => prev ? { ...prev, likes: prev.likes + 1 } : null);
     }
@@ -326,7 +331,7 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
       text: newCommentText.trim(),
       date: new Date().toISOString().split('T')[0]
     };
-    setBlogPosts(prev => prev.map(p => p.id === postId ? { ...p, comments: [...p.comments, commentObj] } : p));
+    setLocalBlogPosts(prev => prev.map(p => p.id === postId ? { ...p, comments: [...p.comments, commentObj] } : p));
     if (selectedBlogForModal && selectedBlogForModal.id === postId) {
       setSelectedBlogForModal(prev => prev ? { ...prev, comments: [...prev.comments, commentObj] } : null);
     }
@@ -429,15 +434,15 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
             </div>
           </div>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-0.5 xl:space-x-1">
+          {/* Desktop Navigation Links - Horizontal Scrollable with Discrete Scrollbar */}
+          <nav className="hidden lg:flex items-center space-x-1 flex-1 min-w-0 overflow-x-auto py-1.5 px-1 mx-2 discrete-scrollbar scroll-smooth">
             {navItems.map(item => (
               <button
                 key={item.id}
                 onClick={() => setCurrentPage(item.id)}
-                className={`px-2 xl:px-2.5 py-1.5 text-[11px] xl:text-xs font-bold font-heading uppercase transition-colors border-b-2 whitespace-nowrap rounded-lg ${
+                className={`px-2.5 xl:px-3 py-1.5 text-[11px] xl:text-xs font-bold font-heading uppercase transition-colors border-b-2 whitespace-nowrap rounded-lg flex-shrink-0 ${
                   currentPage === item.id 
-                    ? 'border-emerald-700 text-emerald-900 bg-emerald-50/80' 
+                    ? 'border-emerald-700 text-emerald-900 bg-emerald-50/80 shadow-2xs' 
                     : 'border-transparent text-slate-700 hover:text-emerald-800 hover:bg-slate-100'
                 }`}
               >
@@ -475,6 +480,23 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
               {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
             </button>
           </div>
+        </div>
+
+        {/* Mobile Quick Horizontal Scroll Bar */}
+        <div className="lg:hidden bg-slate-50/90 border-t border-b border-slate-200/80 px-2 py-1.5 overflow-x-auto discrete-scrollbar scroll-smooth flex items-center space-x-1.5">
+          {navItems.map(item => (
+            <button
+              key={`mobile-quick-${item.id}`}
+              onClick={() => setCurrentPage(item.id)}
+              className={`px-3 py-1.5 text-[11px] font-bold font-heading uppercase transition-all whitespace-nowrap rounded-lg flex-shrink-0 border ${
+                currentPage === item.id 
+                  ? 'bg-emerald-800 text-white border-emerald-950 shadow-2xs' 
+                  : 'bg-white text-slate-700 hover:text-emerald-900 border-slate-200'
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
         </div>
 
         {/* Mobile Nav Dropdown */}

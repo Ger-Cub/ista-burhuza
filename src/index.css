@@ -31,3 +31,23 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #047857;
 }
+
+/* Discrete scrollbar utility for navbar */
+.discrete-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+.discrete-scrollbar::-webkit-scrollbar {
+  height: 4px;
+}
+.discrete-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.discrete-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+.discrete-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #059669;
+}
+

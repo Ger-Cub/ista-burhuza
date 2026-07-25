@@ -189,3 +189,29 @@ export interface AcademicEvent {
   description: string;
   concerne: string;
 }
+
+export interface BlogComment {
+  id: string;
+  author: string;
+  text: string;
+  date: string;
+}
+
+export interface BlogPost {
+  id: string;
+  titre: string;
+  category: 'Recherche & Tech' | 'Vie Estudiantine' | 'Projets Académiques' | 'Partenariats' | 'Vie du Campus' | 'Événements & Soutenances';
+  author: string;
+  authorRole: string;
+  date: string;
+  readTime: string;
+  excerpt: string;
+  fullText: string;
+  tags: string[];
+  featured?: boolean;
+  likes: number;
+  comments: BlogComment[];
+  statut: 'Publié' | 'En attente' | 'Rejeté';
+  submittedByEmail?: string;
+  notesModeration?: string;
+}
