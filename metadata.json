@@ -1,0 +1,6 @@
+{
+  "name": "SIGU-ISTA",
+  "description": "Système Intégré de Gestion Universitaire - ISTA/Bukavu (Burhuza). Gestion académique, financière, RH, délibérations et communication.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
